@@ -24,6 +24,6 @@ public class Phone implements Serializable {
     private String phoneNumber;
 
     @ManyToOne
-    @JoinColumn(name = "type_name_id")
+    @JoinColumn(name = "type_id")
     private PhoneType phoneType;
 }
