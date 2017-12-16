@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="iturcanu" id="feature/DELIVERY-1">
+
+        <createTable tableName="address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="street" type="VARCHAR(50)"/>
+            <column name="city" type="VARCHAR(50)"/>
+            <column name="country" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(30)"/>
+            <column name="last_name" type="VARCHAR(30)"/>
+            <column name="email" type="VARCHAR(30)"/>
+            <column name="picture" type="VARCHAR(100)"/>
+            <column name="gender" type="CHARACTER(1)"/>
+            <column name="date_of_birth" type="datetime"/>
+            <column name="username" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="hash_pass" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints foreignKeyName="FK_users_address_id" referencedTableName="address" referencedColumnNames="id"/>
+            </column>
+            <column name="active" type="BOOLEAN"/>
+        </createTable>
+
+        <createTable tableName="phone_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type_name" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="phone">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(20)"/>
+            <column name="type_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_phone_type_id" referencedTableName="phone_type" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role_name" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_to_role">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_user_to_role_user_id" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_user_to_role_role_id" referencedTableName="role" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_to_phone">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_user_to_phone_user_id" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="phone_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_user_to_phone_phone_id" referencedTableName="phone" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
