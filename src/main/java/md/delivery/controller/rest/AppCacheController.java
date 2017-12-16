@@ -1,10 +1,11 @@
-package md.delivery.controller;
+package md.delivery.controller.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AppCacheController {
+
     @GetMapping(value = "/manifest.appcache", produces = "text/cache-manifest")
     public String offMainifest() {
         StringBuilder strManiFstBuilder = new StringBuilder();
