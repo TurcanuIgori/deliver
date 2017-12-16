@@ -14,6 +14,7 @@ public class LoginController {
 
     @GetMapping("/test-controller/{pass}")
     public String testController(@PathVariable("pass") String pass) {
+//        $2a$11$0e/5mLK/ydL9HHtbONu/5uICpzlBBqc4b6ycIlQaZRpLNsxjHRG/K
         passwordEncoder.encode(pass);
         return "index";
     }
