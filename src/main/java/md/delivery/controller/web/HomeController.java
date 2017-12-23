@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+@PreAuthorize("isFullyAuthenticated()")
 public class HomeController {
 
     private final Logger log = LoggerFactory.getLogger(HomeController.class);

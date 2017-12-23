@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+@PreAuthorize("isFullyAuthenticated()")
 public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
