@@ -29,13 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/login").permitAll()
+                .antMatchers("/resources/**", "/css/**", "/js/**", "/login").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
             .loginPage("/login")
             .loginProcessingUrl("/login")
-            .failureUrl("/login?error")
+            .failureUrl("/login/error")
             .usernameParameter("username")
             .passwordParameter("password")
             .permitAll();
