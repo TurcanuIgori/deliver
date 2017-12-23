@@ -1,23 +1,31 @@
 package md.delivery.controller.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AppCacheController {
 
+    private final Logger log = LoggerFactory.getLogger(AppCacheController.class);
+
+    /**
+     * This controller return a file of the "text/cache-manifest"  type witch contains urls of the cache files.
+     *
+     * @return - urls to cache
+     */
     @GetMapping(value = "/manifest.appcache", produces = "text/cache-manifest")
     public String offMainifest() {
-        StringBuilder strManiFstBuilder = new StringBuilder();
-        strManiFstBuilder.append("CACHE MANIFEST\n");
-        strManiFstBuilder.append("CACHE:\n" +
-                "resources/core/css/bootstrap.min.css\n" +
-                "resources/core/css/hello.css\n" +
-                "resources/core/js/bootstrap.min.js\n" +
-                "resources/core/js/jquery-3.2.1.min.js\n" +
-                "resources/core/js/hello.js\n" +
-                "/hello/iturcanu"
+        StringBuilder manifestFileContent = new StringBuilder();
+        manifestFileContent.append("CACHE MANIFEST\n");
+        manifestFileContent.append("CACHE:\n" +
+                "css/bootstrap.min.css\n" +
+                "js/jquery-3.2.1.min.js\n" +
+                "js/tether.min.js\n" +
+                "js/bootstrap.min.js"
         );
-        return strManiFstBuilder.toString();
+        log.info("Request to get manifest.appcache file: ", manifestFileContent.toString());
+        return manifestFileContent.toString();
     }
 }
