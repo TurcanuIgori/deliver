@@ -20,9 +20,13 @@ public class AppCacheController {
         StringBuilder manifestFileContent = new StringBuilder();
         manifestFileContent.append("CACHE MANIFEST\n");
         manifestFileContent.append("CACHE:\n" +
+                // urls to css files
                 "css/bootstrap.min.css\n" +
-                "js/jquery-3.2.1.min.js\n" +
+                "css/dashboard.css\n" +
+                // urls to javascript files
+                "js/jquerys-3.2.1.min.js\n" +
                 "js/tether.min.js\n" +
+                "js/holder.min.js\n" +
                 "js/bootstrap.min.js"
         );
         log.info("Request to get manifest.appcache file: ", manifestFileContent.toString());
