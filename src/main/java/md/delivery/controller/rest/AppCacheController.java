@@ -24,10 +24,10 @@ public class AppCacheController {
                 "css/bootstrap.min.css\n" +
                 "css/dashboard.css\n" +
                 // urls to javascript files
-                "js/jquerys-3.2.1.min.js\n" +
-                "js/tether.min.js\n" +
-                "js/holder.min.js\n" +
-                "js/bootstrap.min.js"
+                "js/libraries/jquery-3.2.1.min.js\n" +
+                "js/libraries/tether.min.js\n" +
+                "js/libraries/holder.min.js\n" +
+                "js/libraries/bootstrap.min.js"
         );
         log.info("Request to get manifest.appcache file: {}", manifestFileContent.toString());
         return manifestFileContent.toString();
