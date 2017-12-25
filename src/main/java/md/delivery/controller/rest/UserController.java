@@ -34,7 +34,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public User findById(@PathVariable("userId") Long userId) {
-        log.info("Request to find user by id: ", userId);
+        log.info("Request to find user by id: {}", userId);
         return userRepository.findOne(userId);
     }
 
@@ -46,7 +46,7 @@ public class UserController {
      */
     @PostMapping("/")
     public User createUser(@ModelAttribute("user") User newUser) {
-        log.info("Request to create user: ", newUser);
+        log.info("Request to create user: {}", newUser);
         return userRepository.save(newUser);
     }
 
@@ -58,7 +58,7 @@ public class UserController {
      */
     @PutMapping("/")
     public User updateUser(@ModelAttribute("user") User updatedUser) {
-        log.info("Request to update user: ", updatedUser);
+        log.info("Request to update user: {}", updatedUser);
         return userRepository.save(updatedUser);
     }
 
@@ -69,7 +69,7 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable("userId") Long userId) {
-        log.info("Request to delete user by id:", userId);
+        log.info("Request to delete user by id: {}", userId);
         userRepository.delete(userId);
     }
 }

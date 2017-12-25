@@ -14,7 +14,7 @@ public class HomeController {
 
     @GetMapping("/index")
     public String getIndexPage() {
-        log.info("Request to get page");
+        log.info("Request to get index page");
         return "index";
     }
 }

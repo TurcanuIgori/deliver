@@ -29,7 +29,7 @@ public class AppCacheController {
                 "js/holder.min.js\n" +
                 "js/bootstrap.min.js"
         );
-        log.info("Request to get manifest.appcache file: ", manifestFileContent.toString());
+        log.info("Request to get manifest.appcache file: {}", manifestFileContent.toString());
         return manifestFileContent.toString();
     }
 }
