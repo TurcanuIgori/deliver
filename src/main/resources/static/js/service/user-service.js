@@ -14,3 +14,30 @@ function createRequest(){
         }
     }
 }
+
+// findAllUsers() GET
+
+function findUserById(id){
+    var user;
+    createRequest();
+    if(request==null){
+        alert("Error creating request!");
+    }
+    var url = "users/" + id;
+    request.open("GET", url, true);
+    request.onreadystatechange=function() {
+        if (request.readyState == 4){
+            if(request.status == 200){
+                 user = eval('(' + request.responseText + ')');
+            }
+        } else {
+            console.log('Error to get user by id: ' + id);
+        }
+    };
+    request.send(null);
+    return user;
+}
+// findUserById(userId) GET
+// deleteUserById(userId) DELETE
+// updateUser(user) PUT
+// craeteUser(newUser) POST

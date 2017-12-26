@@ -1,6 +1,10 @@
+var userService = require('../service/user-service.js');
+
 // this handler will show modal window and populate it with data from user by given user
 function toogleModalToUpdateUser(userId) {
     console.log('Handle chick on the update button with id: ' + userId);
+    var user = userService.findUserById(userId);
+    console.log(user);
 }
 
 // this handler will show popup window to ask user if he really need to delete this user
