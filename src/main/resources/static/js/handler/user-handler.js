@@ -1,9 +1,9 @@
-var userService = require('../service/user-service.js');
+// var userService = require('../service/user-service.js');
 
 // this handler will show modal window and populate it with data from user by given user
 function toogleModalToUpdateUser(userId) {
     console.log('Handle chick on the update button with id: ' + userId);
-    var user = userService.findUserById(userId);
+    var user = findUserById(userId);
     console.log(user);
 }
 
