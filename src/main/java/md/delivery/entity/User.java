@@ -1,5 +1,6 @@
 package md.delivery.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,19 +32,19 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
+
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "hash_pass")
     private String password;
 
     @Transient
     private String confirmPassword;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_to_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private List<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
@@ -61,6 +62,7 @@ public class User implements Serializable {
     )
     private List<Phone> phones;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
     private LocalDate dob;
 
@@ -69,4 +71,9 @@ public class User implements Serializable {
 
     @Column
     private Boolean active;
+
+    public String getDob() {
+        return dob.toString();
+    }
+
 }
