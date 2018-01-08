@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,15 +13,16 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "first_name")
@@ -71,9 +73,4 @@ public class User implements Serializable {
 
     @Column
     private Boolean active;
-
-    public String getDob() {
-        return dob.toString();
-    }
-
 }

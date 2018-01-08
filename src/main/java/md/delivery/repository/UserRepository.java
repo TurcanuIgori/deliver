@@ -14,6 +14,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByActiveIsTrue();
 
-    @EntityGraph(attributePaths = "roles")
     Optional<User> findByUsernameIs(String username);
 }
