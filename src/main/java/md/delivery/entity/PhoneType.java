@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+/**
+ * Entity for {@link PhoneType}.
+ */
 @Getter
 @Setter
 @ToString

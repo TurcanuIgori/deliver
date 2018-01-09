@@ -91,7 +91,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="user:${users}">
-                                <td th:text="${user.picture}"></td>
+                                <td><img th:height="150px" th:src="@{/users/image/} + ${user.username}"/></td>
                                 <td th:text="${user.firstName}"></td>
                                 <td th:text="${user.lastName}"></td>
                                 <td th:text="${user.username}"></td>
@@ -144,7 +144,7 @@
                         <div class="form-group">
                             <label for="picture">Select Picture:</label>
                             <input type="file" form="userSaveForm" class="form-control-file" id="picture" name="picture"/>
-                            <input type="hidden" id="userID"/>
+                            <input type="hidden" form="userSaveForm" id="userID" name="userID"/>
                         </div>
                         <div class="form-group">
                             <label for="firstName" class="form-control-label">First Name:</label>
@@ -160,6 +160,7 @@
                         </div>
                         <div class="form-group">
                             <label for="address" class="form-control-label">Address:</label>
+                            <input type="hidden" form="userSaveForm" id="addressID" name="addressID"/>
                             <input type="text" class="form-control" form="userSaveForm" name="street" id="street" placeholder="Street"/>
                             <input type="text" class="form-control" form="userSaveForm" name="city" id="city" placeholder="City"/>
                             <input type="text" class="form-control" form="userSaveForm" name="country" id="country" placeholder="Country"/>

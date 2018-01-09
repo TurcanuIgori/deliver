@@ -10,11 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link UserDetailsService} to get user credentials.
+ */
 @Component
 public class DefaultUserDetailsService implements UserDetailsService {
 

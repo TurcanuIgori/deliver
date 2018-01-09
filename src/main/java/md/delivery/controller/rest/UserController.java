@@ -1,17 +1,29 @@
 package md.delivery.controller.rest;
 
+import md.delivery.entity.Address;
+import md.delivery.entity.Role;
 import md.delivery.entity.User;
 import md.delivery.repository.UserRepository;
+import md.delivery.service.UserService;
+import md.delivery.utils.UserUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -26,10 +38,17 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserUtils userUtils;
+
     @GetMapping("list")
     public List<User> getAllUsers() {
         log.info("Request to find all users.");
-        return userRepository.findAllByActiveIsTrue();
+        return userRepository.findAllByUsernameNotNull()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -39,55 +58,9 @@ public class UserController {
      * @return -> {@link User}
      */
     @GetMapping("/{userId}")
-    public User findById(@PathVariable("userId") Long userId) {
+    public ResponseEntity findById(@PathVariable("userId") Long userId) {
         log.info("Request to find user by id: {}", userId);
-        return userRepository.findOne(userId);
-    }
-
-    /**
-     * This controller is used to create new user.
-     *
-     * @param newUser -> {@link User}
-     * @return -> created user.
-     */
-    @PostMapping("/")
-    public String createUser(@RequestBody User id) {
-        log.info("Request to create user: {}", id.getFirstName());
-//        if (newUser.getPassword().equals(newUser.getConfirmPassword()) && newUser.getPassword() != null) {
-//            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-//        }
-        return "Succes";
-    }
-
-    /**
-     * Use this controller to update the given user.
-     *
-     * @param updatedUser -> {@link User}
-     * @return -> updated user
-     */
-    @PutMapping("/")
-    public String updateUser(HttpServletRequest httpServletRequest
-            , @RequestParam("picture") MultipartFile file
-            , @RequestParam("firstName") String firstName
-            , @RequestParam("lastName") String lastName
-            , @RequestParam("username") String username
-            , @RequestParam("gender") String gender
-            , @RequestParam(value = "active", required = false) String active
-            , @RequestParam(value = "password", required = false) String password
-            , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
-            , @RequestParam("dob") String dob
-            , @RequestParam(value = "email", required = false) String email
-            , @RequestParam(value = "userID", required = false) String id
-            , @RequestParam(value = "addressID", required = false) String addressID
-            , @RequestParam(value = "roleID", required = false) String roleID
-    ) {
-        log.info("Request to update user: {}", firstName + lastName + username + gender + active + password + repeatPassword + dob + email + id + addressID + roleID);
-        log.info("Request to update user: {}", file.getOriginalFilename());
-//        log.info("File {}", picture.getOriginalFilename());
-//        if (updatedUser.getPassword().equals(updatedUser.getConfirmPassword()) && updatedUser.getPassword() != null) {
-//            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-//        }
-        return "Succes";
+        return new ResponseEntity(userRepository.findOne(userId), HttpStatus.OK);
     }
 
     /**
@@ -96,8 +69,126 @@ public class UserController {
      * @param userId -> {@link User#id}
      */
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity deleteUser(@PathVariable("userId") Long userId) {
         log.info("Request to delete user by id: {}", userId);
-        userRepository.delete(userId);
+        userService.delete(userId);
+        return new ResponseEntity("Succes", HttpStatus.OK);
+    }
+
+    /**
+     * This controller is used to create new user.
+     *
+     * @return -> created user.
+     */
+//    @PostMapping("/")
+//    public ResponseEntity createUser(HttpServletRequest httpServletRequest
+//            , @RequestParam("picture") MultipartFile picture
+//            , @RequestParam("firstName") String firstName
+//            , @RequestParam("lastName") String lastName
+//            , @RequestParam("username") String username
+//            , @RequestParam("gender") String gender
+//            , @RequestParam(value = "active", defaultValue = "false") String active
+//            , @RequestParam(value = "password", required = false) String password
+//            , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
+//            , @RequestParam("dob") String dob
+//            , @RequestParam(value = "email", required = false) String email
+//            , @RequestParam(value = "userID", required = false) String id
+//            , @RequestParam(value = "addressID", required = false) String addressID
+//            , @RequestParam(value = "roleID", required = false) String roleID) throws IOException {
+//        Address address = new Address();
+//        address.setId(new Long(addressID));
+//        Role role = new Role();
+//        role.setId(new Long(roleID));
+//
+//        User newUser = User.builder()
+//                .pictureInBytes(picture.getBytes())
+//                .firstName(firstName)
+//                .lastName(lastName)
+//                .username(username)
+//                .gender(gender)
+//                .active(Boolean.valueOf(active))
+//                .password(password)
+//                .repeatPassword(repeatPassword)
+//                .dob(LocalDate.parse(dob))
+//                .email(email)
+//                .address(address)
+//                .role(role)
+//                .build();
+//        userUtils.saveImage(newUser, picture.getOriginalFilename());
+//        log.info("Request to create user: {}", newUser);
+//        return new ResponseEntity<>(userService.create(newUser), HttpStatus.OK);
+//    }
+    @PostMapping("/")
+    public void createUser(@RequestBody User user) {
+        log.info("User: {}", user);
+    }
+
+    /**
+     * Use this controller to update the given user.
+     *
+     * @return -> updated user
+     */
+    @PutMapping("/")
+    public ResponseEntity updateUser(HttpServletRequest httpServletRequest
+            , @RequestParam("picture") MultipartFile picture
+            , @RequestParam("firstName") String firstName
+            , @RequestParam("lastName") String lastName
+            , @RequestParam("username") String username
+            , @RequestParam("gender") String gender
+            , @RequestParam(value = "active", defaultValue = "false") String active
+            , @RequestParam(value = "password", required = false) String password
+            , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
+            , @RequestParam("dob") String dob
+            , @RequestParam(value = "email", required = false) String email
+            , @RequestParam(value = "userID", required = false) String id
+            , @RequestParam(value = "addressID", required = false) String addressID
+            , @RequestParam(value = "role", required = false) String roleID) throws IOException {
+
+        Address address = new Address();
+        if (Objects.nonNull(addressID)) {
+            address.setId(new Long(addressID));
+        }
+
+        Role role = new Role();
+        role.setId(new Long(roleID));
+
+        if (Objects.nonNull(active)) {
+            active = "true";
+        }
+
+        User user = User.builder()
+                .pictureInBytes(picture.getBytes())
+                .firstName(firstName)
+                .lastName(lastName)
+                .username(username)
+                .gender(gender)
+                .active(Boolean.valueOf(active))
+                .password(password)
+                .repeatPassword(repeatPassword)
+                .dob(LocalDate.parse(dob))
+                .email(email)
+                .id(new Long(id))
+                .address(address)
+                .role(role)
+                .build();
+        userUtils.saveImage(user, picture.getOriginalFilename());
+        log.info("Request to update user: {}", user);
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    }
+
+    @GetMapping("/image/{username}")
+    public void getImageByusername(@PathVariable("username") String username, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            response.setContentType("image/jpg");
+            InputStream is = new FileInputStream(new File(UserUtils.getPathToUserImages() + userRepository.findByUsernameIs(username).get().getPathToPicture()));
+            response.getOutputStream().write(IOUtils.toByteArray(is));
+            response.getOutputStream().close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

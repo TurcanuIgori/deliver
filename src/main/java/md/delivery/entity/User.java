@@ -1,16 +1,20 @@
 package md.delivery.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Entity for {@link User}.
+ */
+@Builder
 @Getter
 @Setter
 @ToString
@@ -42,7 +46,7 @@ public class User implements Serializable {
     private String password;
 
     @Transient
-    private String confirmPassword;
+    private String repeatPassword;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -53,8 +57,12 @@ public class User implements Serializable {
     private Address address;
 
 
-    @Column
-    private String picture;
+    @Column(name = "picture")
+    private String pathToPicture;
+
+    @Transient
+    @JsonIgnore
+    private byte[] pictureInBytes;
 
     @ManyToMany
     @JoinTable(
@@ -64,7 +72,7 @@ public class User implements Serializable {
     )
     private List<Phone> phones;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "date_of_birth")
     private LocalDate dob;
 
@@ -73,4 +81,25 @@ public class User implements Serializable {
 
     @Column
     private Boolean active;
+
+    public User() {
+    }
+
+    public User(Long id, String firstName, String lastName, String username, String email, String password, String repeatPassword, Role role, Address address, String pathToPicture, byte[] pictureInBytes, List<Phone> phones, LocalDate dob, String gender, Boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.repeatPassword = repeatPassword;
+        this.role = role;
+        this.address = address;
+        this.pathToPicture = pathToPicture;
+        this.pictureInBytes = pictureInBytes;
+        this.phones = phones;
+        this.dob = dob;
+        this.gender = gender;
+        this.active = active;
+    }
 }

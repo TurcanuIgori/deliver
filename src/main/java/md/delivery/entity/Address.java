@@ -8,6 +8,9 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Entity for {@link Address}.
+ */
 @Getter
 @Setter
 @ToString

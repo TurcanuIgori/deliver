@@ -9,6 +9,9 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Entity for {@link Role}.
+ */
 @Getter
 @Setter
 @ToString

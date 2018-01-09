@@ -7,17 +7,18 @@ function toogleModalToUpdateUser(userId) {
 // this method is used to complete fields from modal windows with data about user
 function completeModalWindow(data, textStatus) {
     console.log(data);
-    $('#userId').val(data.id);
+    $('#userID').val(data.id);
     $('#firstName').val(data.firstName);
     $('#lastName').val(data.lastName);
     $('#username').val(data.username);
     // $('#username').attr('disabled', 'true');
     $('#email').val(data.email);
     if (data.address) {
+        $('#addressID').val(data.address.id);
         $('#street').val(data.address.street);
         $('#city').val(data.address.city);
         $('#region').val(data.address.region);
-        $('#country').val(data.adress.country);
+        $('#country').val(data.address.country);
     }
     $('#dob').val(data.dob);
     if (data.active == true) {
