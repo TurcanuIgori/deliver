@@ -76,6 +76,9 @@ public class User implements Serializable {
     @Column(name = "date_of_birth")
     private LocalDate dob;
 
+    @Transient
+    private String dobAsString;
+
     @Column
     private String gender;
 
@@ -85,7 +88,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String username, String email, String password, String repeatPassword, Role role, Address address, String pathToPicture, byte[] pictureInBytes, List<Phone> phones, LocalDate dob, String gender, Boolean active) {
+    public User(Long id, String firstName, String lastName, String username, String email, String password, String repeatPassword, Role role, Address address, String pathToPicture, byte[] pictureInBytes, List<Phone> phones, LocalDate dob, String dobAsString, String gender, Boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,7 +102,12 @@ public class User implements Serializable {
         this.pictureInBytes = pictureInBytes;
         this.phones = phones;
         this.dob = dob;
+        this.dobAsString = dobAsString;
         this.gender = gender;
         this.active = active;
+    }
+
+    public String getDobAsString() {
+        return dob.toString();
     }
 }

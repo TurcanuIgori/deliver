@@ -36,11 +36,7 @@ public class UserUtils {
     private UserRepository userRepository;
 
     public void saveImage(User user, String completeFileName) {
-        // if user is new and image is null
-            // set default image
-        // else get image from database
         if (user.getPictureInBytes().length != 0) {
-            // save image
            try {
                File img = new File(PATH_TO_USER_IMAGES + user.getUsername() + getNameOfImage(completeFileName));
                if(img.exists()){

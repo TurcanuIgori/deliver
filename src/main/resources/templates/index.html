@@ -113,13 +113,10 @@
                         <div class="row">
                             <div class="col col-xs-8">
                                 <ul class="pagination pagination-sm">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">&lt;&lt;</a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="getUsersForSelectedPage(1)">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#" onclick="getUsersForSelectedPage(2)">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">&gt;&gt;</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -145,18 +142,22 @@
                             <label for="picture">Select Picture:</label>
                             <input type="file" form="userSaveForm" class="form-control-file" id="picture" name="picture"/>
                             <input type="hidden" form="userSaveForm" id="userID" name="userID"/>
+                            <span id="pictureHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="firstName" class="form-control-label">First Name:</label>
                             <input type="text" form="userSaveForm" class="form-control" id="firstName" name="firstName"/>
+                            <span id="firstNameHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="lastName" class="form-control-label">Last Name:</label>
                             <input type="text" form="userSaveForm" class="form-control" id="lastName" name="lastName"/>
+                            <span id="lastNameHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-control-label">Email Address:</label>
                             <input type="text" class="form-control" id="email" name="email" form="userSaveForm"/>
+                            <span id="emailHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="address" class="form-control-label">Address:</label>
@@ -168,11 +169,12 @@
                         <div class="form-group">
                             <label for="username" class="form-control-label">Username:</label>
                             <input type="text" class="form-control" name="username" form="userSaveForm" id="username"/>
+                            <span id="usernameHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="role">Role:</label>
                             <select class="form-control" id="role" name="role" form="userSaveForm">
-                                <option value="0" id="none">(none)</option>
+                                <option value="0" id="ROLE_NONE">(none)</option>
                                 <option value="1" id="ROLE_ADMIN">ROLE_ADMIN</option>
                                 <option value="2" id="ROLE_USER">ROLE_USER</option>
                             </select>
@@ -180,6 +182,7 @@
                         <div class="form-group">
                             <label for="dob" class="form-control-label">Date of Birth:</label>
                             <input type="text" class="form-control" form="userSaveForm" name="dob" id="dob"/>
+                            <span id="dobHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <legend>Gender:</legend>
@@ -194,11 +197,13 @@
                                     <input type="radio" class="form-check-input" form="userSaveForm" name="gender" id="genderM" value="M"/>
                                     Male
                                 </label>
+                                <span id="genderHelper" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="password" class="form-control-label">Pass:</label>
                             <input type="text" class="form-control" form="userSaveForm" name="password" id="password"/>
+                            <span id="passwordHelper" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="repeatPassword" class="form-control-label">Repeat Pass:</label>

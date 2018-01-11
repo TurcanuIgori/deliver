@@ -53,10 +53,10 @@ function updateUser(user, callback) {
         cache: false,
         timeout: 600000,
         success: function (res, textStatus) {
-            callback(res);
+            callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res);
+            callback(res, textStatus);
         }
     });
 }
@@ -67,17 +67,17 @@ function createUser(newUser, callback) {
         url: 'users/',
         type : 'POST',
         enctype: 'multipart/form-data',
-        data: user,
+        data: newUser,
         // prevent jQuery from automatically transforming the data into a query string
         processData: false,
         contentType: false,
         cache: false,
         timeout: 600000,
         success: function (res, textStatus) {
-            callback(res);
+            callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res);
+            callback(res, textStatus);
         }
     });
 }

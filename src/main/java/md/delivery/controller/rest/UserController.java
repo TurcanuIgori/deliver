@@ -44,6 +44,8 @@ public class UserController {
     @Autowired
     private UserUtils userUtils;
 
+    private static Long ID_OF_ROLE_USER = 2L;
+
     @GetMapping("list")
     public List<User> getAllUsers() {
         log.info("Request to find all users.");
@@ -80,47 +82,51 @@ public class UserController {
      *
      * @return -> created user.
      */
-//    @PostMapping("/")
-//    public ResponseEntity createUser(HttpServletRequest httpServletRequest
-//            , @RequestParam("picture") MultipartFile picture
-//            , @RequestParam("firstName") String firstName
-//            , @RequestParam("lastName") String lastName
-//            , @RequestParam("username") String username
-//            , @RequestParam("gender") String gender
-//            , @RequestParam(value = "active", defaultValue = "false") String active
-//            , @RequestParam(value = "password", required = false) String password
-//            , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
-//            , @RequestParam("dob") String dob
-//            , @RequestParam(value = "email", required = false) String email
-//            , @RequestParam(value = "userID", required = false) String id
-//            , @RequestParam(value = "addressID", required = false) String addressID
-//            , @RequestParam(value = "roleID", required = false) String roleID) throws IOException {
-//        Address address = new Address();
-//        address.setId(new Long(addressID));
-//        Role role = new Role();
-//        role.setId(new Long(roleID));
-//
-//        User newUser = User.builder()
-//                .pictureInBytes(picture.getBytes())
-//                .firstName(firstName)
-//                .lastName(lastName)
-//                .username(username)
-//                .gender(gender)
-//                .active(Boolean.valueOf(active))
-//                .password(password)
-//                .repeatPassword(repeatPassword)
-//                .dob(LocalDate.parse(dob))
-//                .email(email)
-//                .address(address)
-//                .role(role)
-//                .build();
-//        userUtils.saveImage(newUser, picture.getOriginalFilename());
-//        log.info("Request to create user: {}", newUser);
-//        return new ResponseEntity<>(userService.create(newUser), HttpStatus.OK);
-//    }
     @PostMapping("/")
-    public void createUser(@RequestBody User user) {
-        log.info("User: {}", user);
+    public ResponseEntity createUser(HttpServletRequest httpServletRequest
+            , @RequestParam("picture") MultipartFile picture
+            , @RequestParam("firstName") String firstName
+            , @RequestParam("lastName") String lastName
+            , @RequestParam("username") String username
+            , @RequestParam("gender") String gender
+            , @RequestParam(value = "active", defaultValue = "false") String active
+            , @RequestParam(value = "password", required = false) String password
+            , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
+            , @RequestParam("dob") String dob
+            , @RequestParam(value = "email", required = false) String email
+            , @RequestParam(value = "addressID", required = false) String addressID
+            , @RequestParam(value = "roleID", required = false) String roleID) throws IOException {
+        active = (active.equals("on") ? "true" : "false");
+
+        User newUser = User.builder()
+                .pictureInBytes(picture.getBytes())
+                .firstName(firstName)
+                .lastName(lastName)
+                .username(username)
+                .gender(gender)
+                .active(Boolean.valueOf(active))
+                .password(password)
+                .repeatPassword(repeatPassword)
+                .dob(LocalDate.parse(dob))
+                .email(email)
+                .build();
+        if (addressID.length() != 0) {
+            Address address = new Address();
+            address.setId(new Long(addressID));
+            newUser.setAddress(address);
+        }
+        if (Objects.nonNull(roleID) && roleID.length() != 0) {
+            Role role = new Role();
+            role.setId(new Long(roleID));
+            newUser.setRole(role);
+        } else {
+            Role role = new Role();
+            role.setId(new Long(ID_OF_ROLE_USER));
+            newUser.setRole(role);
+        }
+        userUtils.saveImage(newUser, picture.getOriginalFilename());
+        log.info("Request to create user: {}", newUser);
+        return new ResponseEntity<>(userService.create(newUser), HttpStatus.OK);
     }
 
     /**
@@ -144,17 +150,7 @@ public class UserController {
             , @RequestParam(value = "addressID", required = false) String addressID
             , @RequestParam(value = "role", required = false) String roleID) throws IOException {
 
-        Address address = new Address();
-        if (Objects.nonNull(addressID)) {
-            address.setId(new Long(addressID));
-        }
-
-        Role role = new Role();
-        role.setId(new Long(roleID));
-
-        if (Objects.nonNull(active)) {
-            active = "true";
-        }
+        active = (active.equals("on") ? "true" : "false");
 
         User user = User.builder()
                 .pictureInBytes(picture.getBytes())
@@ -168,16 +164,29 @@ public class UserController {
                 .dob(LocalDate.parse(dob))
                 .email(email)
                 .id(new Long(id))
-                .address(address)
-                .role(role)
                 .build();
+        if (addressID.length() != 0) {
+            Address address = new Address();
+            address.setId(new Long(addressID));
+            user.setAddress(address);
+        }
+        if (roleID.length() != 0) {
+            Role role = new Role();
+            role.setId(new Long(roleID));
+            user.setRole(role);
+        } else {
+            Role role = new Role();
+            role.setId(new Long(ID_OF_ROLE_USER));
+            user.setRole(role);
+        }
+
         userUtils.saveImage(user, picture.getOriginalFilename());
         log.info("Request to update user: {}", user);
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
     @GetMapping("/image/{username}")
-    public void getImageByusername(@PathVariable("username") String username, HttpServletResponse response, HttpServletRequest request) {
+    public void getImageByUsername(@PathVariable("username") String username, HttpServletResponse response, HttpServletRequest request) {
         try {
             response.setContentType("image/jpg");
             InputStream is = new FileInputStream(new File(UserUtils.getPathToUserImages() + userRepository.findByUsernameIs(username).get().getPathToPicture()));

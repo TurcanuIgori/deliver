@@ -32,6 +32,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Instead of delete, we will set active status to inactive.
+     */
     public Boolean delete(Long userId) {
         User user = userRepository.findOne(userId);
         user.setActive(Boolean.FALSE);
@@ -39,10 +42,13 @@ public class UserService {
         return Boolean.TRUE;
     }
 
+    /**
+     * If user do not set the password we will get it from the database.
+     */
     private void checkPasswordOfUser(User user) {
         if (user.getPassword().length() != 0) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
+        } else if (Objects.nonNull(user.getId())) {
             user.setPassword(userRepository.findByUsernameIs(user.getUsername()).get().getPassword());
         }
     }
