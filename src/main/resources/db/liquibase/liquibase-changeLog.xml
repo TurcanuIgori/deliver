@@ -19,6 +19,15 @@
             <column name="country" type="VARCHAR(50)"/>
         </createTable>
 
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role_name" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
@@ -37,6 +46,9 @@
             </column>
             <column name="address_id" type="BIGINT">
                 <constraints foreignKeyName="FK_users_address_id" referencedTableName="address" referencedColumnNames="id"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints foreignKeyName="FK_users_role_id" referencedTableName="role" referencedColumnNames="id"/>
             </column>
             <column name="active" type="BOOLEAN"/>
         </createTable>
@@ -58,24 +70,6 @@
             </column>
         </createTable>
 
-        <createTable tableName="role">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="role_name" type="VARCHAR(30)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="user_to_role">
-            <column name="user_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_user_to_role_user_id" referencedTableName="users" referencedColumnNames="id"/>
-            </column>
-            <column name="role_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_user_to_role_role_id" referencedTableName="role" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
         <createTable tableName="user_to_phone">
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_user_to_phone_user_id" referencedTableName="users" referencedColumnNames="id"/>
@@ -86,5 +80,4 @@
         </createTable>
 
     </changeSet>
-
 </databaseChangeLog>

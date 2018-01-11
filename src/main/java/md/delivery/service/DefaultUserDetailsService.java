@@ -10,9 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link UserDetailsService} to get user credentials.
+ */
 @Component
 public class DefaultUserDetailsService implements UserDetailsService {
 
@@ -23,9 +26,8 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findByUsernameIs(username).get();
 
-        Set<GrantedAuthority> roles = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toSet());
+        Set<GrantedAuthority> roles = new HashSet();
+        roles.add(new SimpleGrantedAuthority(user.getRole().getName()));
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), roles);
