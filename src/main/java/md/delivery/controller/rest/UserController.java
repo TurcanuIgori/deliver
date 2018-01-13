@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("list")
     public List<User> getAllUsers() {
         log.info("Request to find all users.");
-        return userRepository.findAllByUsernameNotNull()
+        return userRepository.findAllUsers()
                 .collect(Collectors.toList());
     }
 

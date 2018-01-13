@@ -80,4 +80,53 @@
         </createTable>
 
     </changeSet>
+
+    <changeSet id="feature/DELIVERY-7" author="iturcanu">
+
+        <createTable tableName="product_group">
+                <column autoIncrement="true" name="id" type="BIGINT">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="name" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="price" type="FLOAT"/>
+            <column name="total_quantity" type="INTEGER"/>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_product_group_id" referencedTableName="product_group" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="market">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_owner_id" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_address_id" referencedTableName="address" referencedColumnNames="id"/>
+            </column>
+            <column name="total_quantity" type="INTEGER"/>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_product_group_id" referencedTableName="product_group" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="market_to_product">
+            <column name="market_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_to_product_market_id" referencedTableName="market" referencedColumnNames="id"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_to_product_product_id" referencedTableName="product" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
 </databaseChangeLog>
