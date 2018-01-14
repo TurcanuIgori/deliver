@@ -1,9 +1,6 @@
 package md.delivery.controller.web;
 
-import md.delivery.repository.GroupRepository;
-import md.delivery.repository.MarketRepository;
-import md.delivery.repository.ProductRepository;
-import md.delivery.repository.UserRepository;
+import md.delivery.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +29,15 @@ public class HomeController {
     @Autowired
     private GroupRepository groupRepository;
 
-    @GetMapping("/index")
+    @Autowired
+    private CountryRepository countryRepository;
+
+    @GetMapping("/user")
     public String getIndexPage(Model model) {
         log.info("Request to get index page...");
         model.addAttribute("users", userRepository.findAllUsers()
             .collect(Collectors.toList()));
-        return "index";
+        return "users";
     }
 
     @GetMapping("/product")
@@ -54,6 +54,10 @@ public class HomeController {
     public String getMarketsPage(Model model) {
         log.info("Request to get markets page...");
         model.addAttribute("markets", marketRepository.findAllMarkets()
+                .collect(Collectors.toList()));
+        model.addAttribute("owners", userRepository.findAllByActiveIsTrue()
+                .collect(Collectors.toList()));
+        model.addAttribute("countries", countryRepository.findAllCountries()
                 .collect(Collectors.toList()));
         return "markets";
     }

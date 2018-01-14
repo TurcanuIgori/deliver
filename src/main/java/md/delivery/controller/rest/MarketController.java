@@ -23,6 +23,9 @@ public class MarketController {
     @Autowired
     private MarketRepository marketRepository;
 
+    /**
+     * GET - /markets/ - return all markets
+     */
     @GetMapping("/")
     public List<Market> getAllMarkets() {
         log.info("Request to get all markets...");
@@ -30,8 +33,11 @@ public class MarketController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * GET - /markets/marketId - return market by given id
+     */
     @GetMapping("/{marketId}")
-    public ResponseEntity getProductyId(@RequestParam("marketId") Long marketId) {
+    public ResponseEntity getProductyId(@PathVariable("marketId") Long marketId) {
         log.info("Request to get market by id: {}", marketId);
         return new ResponseEntity(
                 marketRepository.findOne(marketId),
@@ -39,20 +45,29 @@ public class MarketController {
         );
     }
 
+    /**
+     * POST - /markets/ - create new market with data from request body
+     */
     @PostMapping("/")
-    public ResponseEntity createMarket(Market market) {
+    public ResponseEntity createMarket(@RequestBody Market market) {
         log.info("Request to create new market: {}", market);
         return new ResponseEntity(marketRepository.save(market), HttpStatus.OK);
     }
 
+    /**
+     * PUT - /markets/ - update market with data from request body
+     */
     @PutMapping("/")
-    public ResponseEntity updateMarket(Market market) {
+    public ResponseEntity updateMarket(@RequestBody Market market) {
         log.info("Request to update market: {}", market);
         return new ResponseEntity(marketRepository.save(market), HttpStatus.OK);
     }
 
+    /**
+     * DELETE - /markets/ - delete market by given id
+     */
     @DeleteMapping("{marketId}")
-    public ResponseEntity deleteMarket(@RequestParam("marketId") Long marketId) {
+    public ResponseEntity deleteMarket(@PathVariable("marketId") Long marketId) {
         log.info("Request to delete market with id: {}", marketId);
         marketRepository.delete(marketId);
         return new ResponseEntity("succes", HttpStatus.OK);

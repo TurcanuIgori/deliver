@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html manifest="manifest.appcache" type="text/cache-manifest" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Markets</title>
+    <script type="text/javascript"
+            src="webjars/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>-->
+
+    <link rel="stylesheet" href="css/dashboard.css"/>
+    <link rel="stylesheet" href="css/grid.css"/>
+    <script src="js/service/market-service.js"></script>
+    <script src="js/handler/market-handler.js"></script>
+    <script src="js/libraries/tether.min.js"></script>
+    <script src="js/libraries/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Delivery</a>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+            </li>
+        </ul>
+        <div class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search"/>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  active" href="/market">Markets <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/product">Products</a>
+                </li>
+            </ul>
+        </nav>
+
+        <class class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">Manage Markets</h3>
+                        </div>
+                        <div class="col col-xs-6 text-right">
+                            <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal"
+                                    data-target="#exampleModal" th:onclick="'toogleModalToCreateMarket()'">New Market
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Owner</th>
+                            <th>Address</th>
+                            <th th:width="80px">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="market:${markets}">
+                            <td th:text="${market.name}"></td>
+                            <td th:text="${market.owner.firstName} ${market.owner.lastName}"></td>
+                            <td th:text="${user.address?.country + ' ' + user.address?.city + ' ' + user.address?.street}"></td>
+                            <td>
+                                <a class="btn btn-default"
+                                   th:onclick="'toogleModalToUpdateMarket(\'' + ${market.id} + '\')'" data-toggle="modal"
+                                   data-target="#exampleModal">Edit</a>
+                                <a class="btn btn-danger"
+                                   th:onclick="'toogleModalToDeleteMarket(\'' + ${market.id} + '\')'">Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-8">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item"><a class="page-link" href="#">&lt;&lt;</a></li>
+                                <li class="page-item"><a class="page-link" href="#" onclick="">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#" onclick="">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">&gt;&gt;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </class>
+    </div>
+</div>
+<!-- modal to update/save market -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Market</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="marketSaveForm" name="marketSaveForm" method="post">
+                    <div class="form-group">
+                        <label for="name" class="form-control-label">Name:</label>
+                        <input type="text" form="marketSaveForm" class="form-control" id="name" name="name"/>
+                        <input type="hidden" form="marketSaveForm" class="form-control" id="marketId" name="marketId"/>
+                        <span id="nameHelper" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerId">Owner:</label>
+                        <select class="form-control" id="ownerId" name="ownerId" form="marketSaveForm">
+                            <option value="0" id="owner_none">(none)</option>
+                            <option th:each="owner : ${owners}"
+                                    th:value="${owner.id}"
+                                    th:id="${owner.username}"
+                                    th:text="${owner.firstName} + ' ' + ${owner.lastName}"></option>
+                        </select>
+                        <span id="groupIdHelper" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="countryId">Country:</label>
+                        <select class="form-control" id="countryId" name="countryId" form="marketSaveForm">
+                            <option value="0" id="country_none">(none)</option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:id="${country.name}"
+                                    th:text="${country.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cityId">City:</label>
+                        <select class="form-control" id="cityId" name="cityId" form="marketSaveForm" disabled="disabled">
+                            <option value="0" id="city_none">(none)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="streetId">Street:</label>
+                        <select class="form-control" id="streetId" name="streetId" form="marketSaveForm"  disabled="disabled">
+                            <option value="0" id="street_none">(none)</option>
+                        </select>
+                        <span id="streetIdHelper" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="btnSubmit" form="marketSaveForm" name="btnSubmit" class="btn btn-primary">Save Market</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

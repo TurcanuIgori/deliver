@@ -23,6 +23,9 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    /**
+     * GET - /products/ - return all products
+     */
     @GetMapping("/")
     public List<Product> getAllProducts() {
         log.info("Request to get all products...");
@@ -30,8 +33,11 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * GET - /products/productId - return product by given id
+     */
     @GetMapping("/{productId}")
-    public ResponseEntity getProductyId(@RequestParam("productId") Long productId) {
+    public ResponseEntity getProductyId(@PathVariable("productId") Long productId) {
         log.info("Request to get product by id: {}", productId);
         return new ResponseEntity(
                 productRepository.findProductById(productId).get(),
@@ -39,29 +45,29 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/change-price")
-    public ResponseEntity changePriceOfProduct(@RequestParam("productId") Long productId, @RequestParam("newPrice") Double newPrice){
-        log.info("Request to change price of the product with id: {}, new price is: {}", productId, newPrice);
-        Product product = productRepository.findProductById(productId).get();
-        product.setPrice(newPrice);
-        productRepository.save(product);
-        return new ResponseEntity("Succes", HttpStatus.OK);
-    }
-
+    /**
+     * POST - /products/ - create product with data from request body
+     */
     @PostMapping("/")
-    public ResponseEntity createProduct(Product product) {
+    public ResponseEntity createProduct(@RequestBody Product product) {
         log.info("Request to create new product: {}", product);
         return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
     }
 
+    /**
+     * PUT - /products/ - update product with data from request body
+     */
     @PutMapping("/")
-    public ResponseEntity updateProduct(Product product) {
+    public ResponseEntity updateProduct(@RequestBody Product product) {
         log.info("Request to update product: {}", product);
         return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
     }
 
+    /**
+     * DELETE - /products/productId - delete product by given id
+     */
     @DeleteMapping("{productId}")
-    public ResponseEntity deleteProduct(@RequestParam("productId") Long productId) {
+    public ResponseEntity deleteProduct(@PathVariable("productId") Long productId) {
         log.info("Request to delete product with id: {}", productId);
         productRepository.delete(productId);
         return new ResponseEntity("succes", HttpStatus.OK);

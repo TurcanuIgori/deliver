@@ -22,6 +22,9 @@ public class GroupController {
     @Autowired
     private GroupRepository groupRepository;
 
+    /**
+     * GET - /groups/ - return all groups
+     */
     public List<Group> getAllGroups() {
         log.info("Request to get all group of products...");
         return groupRepository.findAllGroups()

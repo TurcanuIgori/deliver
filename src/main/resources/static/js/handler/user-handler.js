@@ -66,18 +66,19 @@ function saveUserHandler() {
 function userSavedAction(res, status) {
     if (status == 'success') {
         $('#exampleModal').modal('toggle');
+        location.reload();
     }
 }
 
 // this handler will show popup window to ask user if he really need to delete this user
 function toogleModalToDeleteUser(userId) {
-    resetUserForm();
-    console.log('Handle chick on the delete button with id: ' + userId);
     deleteUserById(userId, userDeletedAction);
 }
 
-function userDeletedAction(res) {
-    console.log(res);
+function userDeletedAction(res, textStatus) {
+    if (textStatus == 'success') {
+        location.reload();
+    }
 }
 
 function getUsersForSelectedPage(selectedPageNumber) {
@@ -86,8 +87,6 @@ function getUsersForSelectedPage(selectedPageNumber) {
 function toogleModalToCreateUser() {
     resetUserForm();
 }
-// @TODO implement the reset method for save user form
-// @TODO implement the validation for save user form
 
 function resetUserForm() {
     $('#userID').val('');

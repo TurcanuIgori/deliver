@@ -20,7 +20,7 @@ public class Market implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -31,8 +31,8 @@ public class Market implements Serializable {
     private User owner;
 
     @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @JoinColumn(name = "street_id")
+    private Street street;
 
     @OneToMany
     @JoinTable(

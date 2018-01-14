@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="iturcanu" id="feature/DELIVERY-1">
@@ -128,5 +125,47 @@
             </column>
         </createTable>
 
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-reformat" author="iturcanu">
+
+        <dropColumn tableName="market" columnName="address_id"/>
+
+        <createTable tableName="country">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="city">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+                <column name="country_id" type="BIGINT">
+                    <constraints nullable="false" foreignKeyName="FK_city_country_id" referencedTableName="country" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="street">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="city_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_street_city_id" referencedTableName="city" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-ref" author="iturcanu">
+
+        <addColumn tableName="market">
+            <column name="street_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_street_id" referencedTableName="street" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

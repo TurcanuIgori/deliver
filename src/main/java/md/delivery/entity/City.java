@@ -13,27 +13,19 @@ import java.io.Serializable;
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table
-public class Product implements Serializable {
+@Table(name = "city")
+public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private Double price;
-
-    @Column(name = "total_quantity")
-    private int totalQuantity;
-
     @OneToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-
-
+    @JoinColumn(name = "country_id")
+    private Country country;
 }
