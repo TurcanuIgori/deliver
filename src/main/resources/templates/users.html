@@ -10,6 +10,10 @@
 
     <link rel="stylesheet" href="css/dashboard.css"/>
     <link rel="stylesheet" href="css/grid.css"/>
+    <script src="js/service/address-service.js"></script>
+    <script src="js/handler/address-handler.js"></script>
+    <script src="js/service/address-service.js"></script>
+    <script src="js/handler/address-handler.js"></script>
     <script src="js/service/user-service.js"></script>
     <script src="js/handler/user-handler.js"></script>
     <script src="js/libraries/tether.min.js"></script>
@@ -161,14 +165,27 @@
                         <span id="emailHelper" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="address" class="form-control-label">Address:</label>
-                        <input type="hidden" form="userSaveForm" id="addressID" name="addressID"/>
-                        <input type="text" class="form-control" form="userSaveForm" name="street" id="street"
-                               placeholder="Street"/>
-                        <input type="text" class="form-control" form="userSaveForm" name="city" id="city"
-                               placeholder="City"/>
-                        <input type="text" class="form-control" form="userSaveForm" name="country" id="country"
-                               placeholder="Country"/>
+                        <label for="countryId">Country:</label>
+                        <select class="form-control" id="countryId" name="countryId" form="userSaveForm">
+                            <option value="0" id="country_none">(none)</option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:id="${country.name}"
+                                    th:text="${country.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cityId">City:</label>
+                        <select class="form-control" id="cityId" name="cityId" form="userSaveForm" disabled="disabled">
+                            <option value="0" id="city_none">(none)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="streetId">Street:</label>
+                        <select class="form-control" id="streetId" name="streetId" form="userSaveForm"  disabled="disabled">
+                            <option value="0" id="street_none">(none)</option>
+                        </select>
+                        <span id="streetIdHelper" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="username" class="form-control-label">Username:</label>

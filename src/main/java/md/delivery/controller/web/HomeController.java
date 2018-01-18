@@ -37,6 +37,8 @@ public class HomeController {
         log.info("Request to get index page...");
         model.addAttribute("users", userRepository.findAllUsers()
             .collect(Collectors.toList()));
+        model.addAttribute("countries", countryRepository.findAllCountries()
+                .collect(Collectors.toList()));
         return "users";
     }
 

@@ -51,7 +51,8 @@ public class MarketController {
     @PostMapping("/")
     public ResponseEntity createMarket(@RequestBody Market market) {
         log.info("Request to create new market: {}", market);
-        return new ResponseEntity(marketRepository.save(market), HttpStatus.OK);
+        marketRepository.save(market);
+        return new ResponseEntity("succes", HttpStatus.OK);
     }
 
     /**
@@ -60,7 +61,8 @@ public class MarketController {
     @PutMapping("/")
     public ResponseEntity updateMarket(@RequestBody Market market) {
         log.info("Request to update market: {}", market);
-        return new ResponseEntity(marketRepository.save(market), HttpStatus.OK);
+        marketRepository.save(market);
+        return new ResponseEntity("succes", HttpStatus.OK);
     }
 
     /**

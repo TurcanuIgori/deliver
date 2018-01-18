@@ -168,4 +168,17 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-delete-group_id" author="iturcanu">
+        <dropColumn tableName="market" columnName="group_id"/>
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-refactoring-user-address" author="iturcanu">
+        <dropColumn tableName="users" columnName="address_id"/>
+        <addColumn tableName="users">
+            <column name="street_id" type="BIGINT">
+                <constraints foreignKeyName="FK_users_street_id" referencedTableName="street" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

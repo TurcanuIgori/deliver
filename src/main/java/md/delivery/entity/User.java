@@ -17,8 +17,8 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"phones"})
+@EqualsAndHashCode(exclude = {"phones"})
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -52,9 +52,9 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @OneToOne
+    @JoinColumn(name = "street_id")
+    private Street street;
 
 
     @Column(name = "picture")
@@ -88,7 +88,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String username, String email, String password, String repeatPassword, Role role, Address address, String pathToPicture, byte[] pictureInBytes, List<Phone> phones, LocalDate dob, String dobAsString, String gender, Boolean active) {
+    public User(Long id, String firstName, String lastName, String username, String email, String password, String repeatPassword, Role role, Street street, String pathToPicture, byte[] pictureInBytes, List<Phone> phones, LocalDate dob, String dobAsString, String gender, Boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,7 +97,7 @@ public class User implements Serializable {
         this.password = password;
         this.repeatPassword = repeatPassword;
         this.role = role;
-        this.address = address;
+        this.street = street;
         this.pathToPicture = pathToPicture;
         this.pictureInBytes = pictureInBytes;
         this.phones = phones;

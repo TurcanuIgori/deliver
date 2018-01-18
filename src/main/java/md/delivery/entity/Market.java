@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"owner", "products", "street"})
 @EqualsAndHashCode
 @Entity
 @Table

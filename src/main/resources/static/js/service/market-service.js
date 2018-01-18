@@ -1,8 +1,51 @@
-function getCitiesByCountry(countryId, callback) {
+// GET - /markets/ - get all markets
+function findAllMarkets(callback) {
     $.ajax({
-        url: "cities/by-country/" + countryId,
+        url: "markets/",
         async: true,
-        type: 'GET',
+        success: function (res, textStatus) {
+            callback(res);
+        },
+        error: function (err) {
+            console.error('Hudson, we have a problem....server respose status is: '+ err.status);
+        }
+    });
+}
+// GET - /markets/marketId - find market by id
+function findMarketById(id, callback) {
+    $.ajax({
+        url: "markets/" + id,
+        async: true,
+        success: function (res, textStatus) {
+            callback(res);
+        },
+        error: function (res, textStatus) {
+            callback(res);
+        }
+    });
+}
+
+// DELETE - /markets/marketId- delete market by id
+function deleteMarketById(id, callback) {
+    $.ajax({
+        url: "markets/" + id,
+        method: 'DELETE',
+        success: function (res, textStatus) {
+            callback(res, textStatus);
+        },
+        error: function (res, textStatus) {
+            callback(res);
+        }
+    });
+}
+
+// PUT - /markets/ - update market
+function updateMarket(data, callback) {
+    $.ajax({
+        url: 'markets/',
+        type : 'PUT',
+        data: JSON.stringify(data),
+        contentType: "application/json;charset=utf-8",
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
@@ -12,11 +55,13 @@ function getCitiesByCountry(countryId, callback) {
     });
 }
 
-function getStreetsByCity(cityId, callback) {
+// POST - /markets/ - create market
+function createMarket(data, callback) {
     $.ajax({
-        url: "streets/by-city/" + cityId,
-        async: true,
-        type: 'GET',
+        url: 'markets/',
+        type : 'POST',
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(data),
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
