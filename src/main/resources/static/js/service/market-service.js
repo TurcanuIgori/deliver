@@ -1,7 +1,7 @@
-// GET - /users/ - get all users
-function findAllUsers(callback) {
+// GET - /markets/ - get all markets
+function findAllMarkets(callback) {
     $.ajax({
-        url: "users/",
+        url: "markets/",
         async: true,
         success: function (res, textStatus) {
             callback(res);
@@ -11,11 +11,10 @@ function findAllUsers(callback) {
         }
     });
 }
-
-// GET - /users/ - find user by id
-function findUserById(id, callback) {
+// GET - /markets/marketId - find market by id
+function findMarketById(id, callback) {
     $.ajax({
-        url: "users/" + id,
+        url: "markets/" + id,
         async: true,
         success: function (res, textStatus) {
             callback(res);
@@ -26,10 +25,10 @@ function findUserById(id, callback) {
     });
 }
 
-// DELETE - /users/- delete user by id
-function deleteUserById(id, callback) {
+// DELETE - /markets/marketId- delete market by id
+function deleteMarketById(id, callback) {
     $.ajax({
-        url: "users/" + id,
+        url: "markets/" + id,
         method: 'DELETE',
         success: function (res, textStatus) {
             callback(res, textStatus);
@@ -40,18 +39,13 @@ function deleteUserById(id, callback) {
     });
 }
 
-// updateUser(user) PUT
-function updateUser(user, callback) {
+// PUT - /markets/ - update market
+function updateMarket(data, callback) {
     $.ajax({
-        url: 'users/',
+        url: 'markets/',
         type : 'PUT',
-        enctype: 'multipart/form-data',
-        data: user,
-        // prevent jQuery from automatically transforming the data into a query string
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
+        data: JSON.stringify(data),
+        contentType: "application/json;charset=utf-8",
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
@@ -61,18 +55,13 @@ function updateUser(user, callback) {
     });
 }
 
-// craeteUser(newUser) POST
-function createUser(newUser, callback) {
+// POST - /markets/ - create market
+function createMarket(data, callback) {
     $.ajax({
-        url: 'users/',
+        url: 'markets/',
         type : 'POST',
-        enctype: 'multipart/form-data',
-        data: newUser,
-        // prevent jQuery from automatically transforming the data into a query string
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(data),
         success: function (res, textStatus) {
             callback(res, textStatus);
         },

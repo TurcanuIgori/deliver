@@ -1,7 +1,7 @@
-// GET - /users/ - get all users
-function findAllUsers(callback) {
+// GET - /products/ - get all products
+function findAllProducts(callback) {
     $.ajax({
-        url: "users/",
+        url: "products/",
         async: true,
         success: function (res, textStatus) {
             callback(res);
@@ -11,11 +11,10 @@ function findAllUsers(callback) {
         }
     });
 }
-
-// GET - /users/ - find user by id
-function findUserById(id, callback) {
+// GET - /products/ - find product by id
+function findProductById(id, callback) {
     $.ajax({
-        url: "users/" + id,
+        url: "products/" + id,
         async: true,
         success: function (res, textStatus) {
             callback(res);
@@ -26,10 +25,10 @@ function findUserById(id, callback) {
     });
 }
 
-// DELETE - /users/- delete user by id
-function deleteUserById(id, callback) {
+// DELETE - /products/- delete product by id
+function deleteProductById(id, callback) {
     $.ajax({
-        url: "users/" + id,
+        url: "products/" + id,
         method: 'DELETE',
         success: function (res, textStatus) {
             callback(res, textStatus);
@@ -40,18 +39,13 @@ function deleteUserById(id, callback) {
     });
 }
 
-// updateUser(user) PUT
-function updateUser(user, callback) {
+// PUT - /products/ - update product
+function updateProduct(data, callback) {
     $.ajax({
-        url: 'users/',
+        url: 'products/',
         type : 'PUT',
-        enctype: 'multipart/form-data',
-        data: user,
-        // prevent jQuery from automatically transforming the data into a query string
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
+        data: JSON.stringify(data),
+        contentType: "application/json;charset=utf-8",
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
@@ -61,18 +55,13 @@ function updateUser(user, callback) {
     });
 }
 
-// craeteUser(newUser) POST
-function createUser(newUser, callback) {
+// POST - /products/ - create product
+function createProduct(data, callback) {
     $.ajax({
-        url: 'users/',
+        url: 'products/',
         type : 'POST',
-        enctype: 'multipart/form-data',
-        data: newUser,
-        // prevent jQuery from automatically transforming the data into a query string
-        processData: false,
-        contentType: false,
-        cache: false,
-        timeout: 600000,
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify(data),
         success: function (res, textStatus) {
             callback(res, textStatus);
         },

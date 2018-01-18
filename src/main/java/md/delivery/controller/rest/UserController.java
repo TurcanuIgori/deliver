@@ -2,6 +2,7 @@ package md.delivery.controller.rest;
 
 import md.delivery.entity.Address;
 import md.delivery.entity.Role;
+import md.delivery.entity.Street;
 import md.delivery.entity.User;
 import md.delivery.repository.UserRepository;
 import md.delivery.service.UserService;
@@ -49,7 +50,7 @@ public class UserController {
     @GetMapping("list")
     public List<User> getAllUsers() {
         log.info("Request to find all users.");
-        return userRepository.findAllByUsernameNotNull()
+        return userRepository.findAllUsers()
                 .collect(Collectors.toList());
     }
 
@@ -94,7 +95,7 @@ public class UserController {
             , @RequestParam(value = "repeatPassword", required = false) String repeatPassword
             , @RequestParam("dob") String dob
             , @RequestParam(value = "email", required = false) String email
-            , @RequestParam(value = "addressID", required = false) String addressID
+            , @RequestParam(value = "streetId", required = false) String streetId
             , @RequestParam(value = "roleID", required = false) String roleID) throws IOException {
         active = (active.equals("on") ? "true" : "false");
 
@@ -110,10 +111,10 @@ public class UserController {
                 .dob(LocalDate.parse(dob))
                 .email(email)
                 .build();
-        if (addressID.length() != 0) {
-            Address address = new Address();
-            address.setId(new Long(addressID));
-            newUser.setAddress(address);
+        if (streetId.length() != 0) {
+            Street street = new Street();
+            street.setId(new Long(streetId));
+            newUser.setStreet(street);
         }
         if (Objects.nonNull(roleID) && roleID.length() != 0) {
             Role role = new Role();
@@ -147,7 +148,7 @@ public class UserController {
             , @RequestParam("dob") String dob
             , @RequestParam(value = "email", required = false) String email
             , @RequestParam(value = "userID", required = false) String id
-            , @RequestParam(value = "addressID", required = false) String addressID
+            , @RequestParam(value = "streetId", required = false) String streetId
             , @RequestParam(value = "role", required = false) String roleID) throws IOException {
 
         active = (active.equals("on") ? "true" : "false");
@@ -165,10 +166,10 @@ public class UserController {
                 .email(email)
                 .id(new Long(id))
                 .build();
-        if (addressID.length() != 0) {
-            Address address = new Address();
-            address.setId(new Long(addressID));
-            user.setAddress(address);
+        if (streetId.length() != 0) {
+            Street street = new Street();
+            street.setId(new Long(streetId));
+            user.setStreet(street);
         }
         if (roleID.length() != 0) {
             Role role = new Role();

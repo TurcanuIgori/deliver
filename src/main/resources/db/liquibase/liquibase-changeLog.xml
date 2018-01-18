@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="iturcanu" id="feature/DELIVERY-1">
@@ -79,5 +76,109 @@
             </column>
         </createTable>
 
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7" author="iturcanu">
+
+        <createTable tableName="product_group">
+                <column autoIncrement="true" name="id" type="BIGINT">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="name" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="price" type="FLOAT"/>
+            <column name="total_quantity" type="INTEGER"/>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_product_group_id" referencedTableName="product_group" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="market">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_owner_id" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_address_id" referencedTableName="address" referencedColumnNames="id"/>
+            </column>
+            <column name="total_quantity" type="INTEGER"/>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_product_group_id" referencedTableName="product_group" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="market_to_product">
+            <column name="market_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_to_product_market_id" referencedTableName="market" referencedColumnNames="id"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_to_product_product_id" referencedTableName="product" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-reformat" author="iturcanu">
+
+        <dropColumn tableName="market" columnName="address_id"/>
+
+        <createTable tableName="country">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+        </createTable>
+
+        <createTable tableName="city">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+                <column name="country_id" type="BIGINT">
+                    <constraints nullable="false" foreignKeyName="FK_city_country_id" referencedTableName="country" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="street">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="city_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_street_city_id" referencedTableName="city" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-ref" author="iturcanu">
+
+        <addColumn tableName="market">
+            <column name="street_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_market_street_id" referencedTableName="street" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-delete-group_id" author="iturcanu">
+        <dropColumn tableName="market" columnName="group_id"/>
+    </changeSet>
+
+    <changeSet id="feature/DELIVERY-7-refactoring-user-address" author="iturcanu">
+        <dropColumn tableName="users" columnName="address_id"/>
+        <addColumn tableName="users">
+            <column name="street_id" type="BIGINT">
+                <constraints foreignKeyName="FK_users_street_id" referencedTableName="street" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

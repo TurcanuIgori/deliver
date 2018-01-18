@@ -11,7 +11,7 @@ public class AppCacheController {
     private final Logger log = LoggerFactory.getLogger(AppCacheController.class);
 
     /**
-     * This controller return a file of the "text/cache-manifest"  type witch contains urls of the cache files.
+     * This controller return a file of the "text/cache-manifest" type witch contains urls of the cache files.
      *
      * @return - urls to cache
      */
