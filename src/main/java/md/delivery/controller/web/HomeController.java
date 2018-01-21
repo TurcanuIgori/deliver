@@ -32,11 +32,14 @@ public class HomeController {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    private CommandRepository commandRepository;
+
     @GetMapping("/user")
     public String getIndexPage(Model model) {
         log.info("Request to get index page...");
         model.addAttribute("users", userRepository.findAllUsers()
-            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         model.addAttribute("countries", countryRepository.findAllCountries()
                 .collect(Collectors.toList()));
         return "users";
@@ -62,6 +65,18 @@ public class HomeController {
         model.addAttribute("countries", countryRepository.findAllCountries()
                 .collect(Collectors.toList()));
         return "markets";
+    }
+
+    @GetMapping("command")
+    public String getCommandsPage(Model model) {
+        log.info("Request to get commands page...");
+        model.addAttribute("commands", commandRepository.findAllCommands()
+                .collect(Collectors.toList()));
+        model.addAttribute("markets", marketRepository.findAllMarkets()
+                .collect(Collectors.toList()));
+        model.addAttribute("delivers", userRepository.findAllByActiveIsTrue()
+                .collect(Collectors.toList()));
+        return "commands";
     }
 
 }

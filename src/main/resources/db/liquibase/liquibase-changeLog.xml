@@ -181,4 +181,55 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="feature/DELIVERY-15" author="iturcanu">
+        <createTable tableName="command_product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="quantity" type="INTEGER"/>
+            <column name="product_id" type="BIGINT">
+                <constraints foreignKeyName="FK_command_product_product_id" referencedTableName="product" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="command">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="deliver_id" type="BIGINT">
+                <constraints foreignKeyName="FK_command_deliver_id" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="market_id" type="BIGINT">
+            <constraints foreignKeyName="FK_command_market_id" referencedTableName="market" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="command_to_command_product">
+            <column name="command_id" type="BIGINT">
+                <constraints foreignKeyName="FK_command_to_command_product_command_id" referencedTableName="command" referencedColumnNames="id"/>
+            </column>
+            <column name="command_product_id" type="BIGINT">
+                <constraints foreignKeyName="FK_command_to_command_product_command_product_id" referencedTableName="command_product" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
+
+
+        <!--&#45;&#45; Function increments the input value by 1-->
+        <!--CREATE OR REPLACE FUNCTION calcTotalPriceOfProducts(product_id INT) RETURNS INT AS $$-->
+        <!--BEGIN-->
+        <!--DECLARE quantityAndPriceCursor CURSOR FROM SELECT p.price, cp.quantity FROM command AS c-->
+        <!--INNER JOIN public.command_to_command_product AS ccp ON c.id = ccp.command_id-->
+        <!--INNER JOIN public.command_product AS cp ON cp.product_id = ccp.product_id-->
+        <!--INNER JOIN public.product AS p ON p.id = cp.product_id-->
+        <!--WHERE c.id = 1;-->
+        <!--OPEN quantityAndPriceCursor;-->
+        <!--RETURN i + 1;-->
+        <!--END;-->
+        <!--$$ LANGUAGE plpgsql;-->
+
+        <!--&#45;&#45; An example how to use the function (Returns: 11)-->
+        <!--SELECT increment(10);-->

@@ -24,6 +24,9 @@ public class CityController {
     @Autowired
     private CityRepository cityRepository;
 
+    /**
+     * GET - /cities/by-country/{countryId} - get cities by {@Country#id}
+     */
     @GetMapping("/by-country/{countryId}")
     public List<City> getCitiesByCountry(@PathVariable("countryId") Long countryId) {
         log.info("Request to get cities by countryId: {}", countryId);
