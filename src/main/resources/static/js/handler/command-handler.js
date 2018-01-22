@@ -9,6 +9,28 @@ function toogleModalToUpdateCommand(commandId) {
 
 function updateCommandForm(command) {
     $('#commandId').val(command.id);
+    $('#deliverId option').each(function (opt, val) {
+        $(this).remove();
+    });
+    $('#deliverId')
+        .append($("<option></option>")
+            .attr('value', 0)
+            .attr('id', 'none_deliver')
+            .text('(none)'));
+    // create options from  taken delivers
+    findAllUsers(function(res) {
+        $.each(res, function(idx, user) {
+            $('#deliverId')
+                .append($('<option>')
+                    .attr("value", user.id)
+                    .attr("id", 'deliver_' + user.id)
+                    .text(user.firstName + ' ' + user.lastName));
+        });
+        $('#deliver_' + command.deliver.id).attr('selected', 'selected');
+    });
+
+
+    $('#market_' + command.market.id).attr('selected', 'selected');
 }
 
 function toogleModalToDeleteCommand(commandId) {

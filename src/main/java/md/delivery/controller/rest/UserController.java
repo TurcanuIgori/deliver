@@ -49,7 +49,7 @@ public class UserController {
 
     private static Long ID_OF_ROLE_USER = 2L;
 
-    @GetMapping("list")
+    @GetMapping("/")
     public List<User> getAllUsers() {
         log.info("Request to find all users.");
         return userRepository.findAllUsers()
