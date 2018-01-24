@@ -90,3 +90,64 @@ function resetAddressDropdowns() {
     });
     // $('#countryId').attr('selected', 'selected');
 }
+
+function updateAddress(address) {
+    $('#countryId option').each(function (idx, val) {
+        $(this).remove();
+    });
+    $('#countryId')
+        .append($("<option>")
+            .attr('value', 0)
+            .attr('id', 'none_country')
+            .text('(none)'));
+    findAllCountries(function (res) {
+        $.each(res, function (idx, country) {
+            $('#countryId')
+                .append($('<option>')
+                    .attr('value', country.id)
+                    .attr("id", 'contr_' + country.id)
+                    .text(country.name));
+        });
+        $('#contr_' + address.city.country.id).attr('selected', 'selected');
+    });
+
+    $('#cityId option').each(function (idx, val) {
+        $(this).remove();
+    });
+    $('#cityId')
+        .append($("<option>")
+            .attr('value', 0)
+            .attr('id', 'none_city')
+            .text('(none)'));
+    $('#cityId').removeAttr('disabled');
+    getCitiesByCountry(address.city.country.id, function (res) {
+        $.each(res, function (idx, city) {
+            $('#cityId')
+                .append($('<option>')
+                    .attr('value', city.id)
+                    .attr("id", 'city_' + city.id)
+                    .text(city.name));
+        });
+        $('#city_' + address.city.id).attr('selected', 'selected');
+    });
+
+    $('#streetId option').each(function (idx, val) {
+        $(this).remove();
+    });
+    $('#streetId')
+        .append($("<option>")
+            .attr('value', 0)
+            .attr('id', 'none_street')
+            .text('(none)'));
+    getStreetsByCity(address.city.id, function (res) {
+        $.each(res, function (idx, street) {
+            $('#streetId')
+                .append($('<option>')
+                    .attr('value', street.id)
+                    .attr("id", 'street_' + street.id)
+                    .text(street.name));
+        });
+        $('#streetId').removeAttr('disabled');
+        $('#street_' + address.id).attr('selected', 'selected');
+    });
+}

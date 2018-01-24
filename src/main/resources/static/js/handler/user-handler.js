@@ -4,8 +4,7 @@ var paginationConfig = {
     showPrev: false,
     showNext: true,
     selectedPage: 1,
-    numberOfPages: 2,
-
+    numberOfPages: 2
 };
 
 // this handler will show modal window and populate it with data from user by given user
@@ -16,19 +15,16 @@ function toogleModalToUpdateUser(userId) {
 
 // this method is used to complete fields from modal windows with data about user
 function completeModalWindow(data, textStatus) {
-    console.log(data);
+    console.log(data.street);
     $('#userID').val(data.id);
     $('#firstName').val(data.firstName);
     $('#lastName').val(data.lastName);
     $('#username').val(data.username);
     // $('#username').attr('disabled', 'true');
     $('#email').val(data.email);
-    if (data.address) {
-        $('#addressID').val(data.address.id);
-        $('#street').val(data.address.street);
-        $('#city').val(data.address.city);
-        $('#region').val(data.address.region);
-        $('#country').val(data.address.country);
+    if (data.street) {
+        $('#streetId').val(data.street.id);
+        updateAddress(data.street);
     }
     $('#dob').val(data.dobAsString);
     if (data.active == true) {
