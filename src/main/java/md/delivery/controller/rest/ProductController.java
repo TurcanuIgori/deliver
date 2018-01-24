@@ -28,7 +28,7 @@ public class ProductController {
      */
     @GetMapping("/")
     public List<Product> getAllProducts() {
-        log.info("Request to get all products...");
+        log.debug("Request to get all products...");
         return productRepository.findAllProducts()
                 .collect(Collectors.toList());
     }
@@ -38,7 +38,7 @@ public class ProductController {
      */
     @GetMapping("/{productId}")
     public ResponseEntity getProductyId(@PathVariable("productId") Long productId) {
-        log.info("Request to get product by id: {}", productId);
+        log.debug("Request to get product by id: {}", productId);
         return new ResponseEntity(
                 productRepository.findProductById(productId).get(),
                 HttpStatus.OK
@@ -50,7 +50,7 @@ public class ProductController {
      */
     @PostMapping("/")
     public ResponseEntity createProduct(@RequestBody Product product) {
-        log.info("Request to create new product: {}", product);
+        log.debug("Request to create new product: {}", product);
         return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class ProductController {
      */
     @PutMapping("/")
     public ResponseEntity updateProduct(@RequestBody Product product) {
-        log.info("Request to update product: {}", product);
+        log.debug("Request to update product: {}", product);
         return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class ProductController {
      */
     @DeleteMapping("{productId}")
     public ResponseEntity deleteProduct(@PathVariable("productId") Long productId) {
-        log.info("Request to delete product with id: {}", productId);
+        log.debug("Request to delete product with id: {}", productId);
         productRepository.delete(productId);
         return new ResponseEntity("succes", HttpStatus.OK);
     }

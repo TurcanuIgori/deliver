@@ -26,7 +26,7 @@ public class GroupController {
      * GET - /groups/ - return all groups
      */
     public List<Group> getAllGroups() {
-        log.info("Request to get all group of products...");
+        log.debug("Request to get all group of products...");
         return groupRepository.findAllGroups()
                 .collect(Collectors.toList());
     }

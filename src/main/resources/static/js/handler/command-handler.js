@@ -28,9 +28,24 @@ function updateCommandForm(command) {
         });
         $('#deliver_' + command.deliver.id).attr('selected', 'selected');
     });
-
-
-    $('#market_' + command.market.id).attr('selected', 'selected');
+    $('#marketId option').each(function (opt, val) {
+        $(this).remove();
+    });
+    $('#marketId')
+        .append($("<option>")
+            .attr('value', 0)
+            .attr('id', 'none_market')
+            .text('(none)'));
+    findAllMarkets(function(res) {
+        $.each(res, function(idx, market) {
+            $('#marketId')
+                .append($('<option>')
+                    .attr("value", market.id)
+                    .attr("id", 'market_' + market.id)
+                    .text(market.name));
+        });
+        $('#market_' + command.market.id).attr('selected', 'selected');
+    });
 }
 
 function toogleModalToDeleteCommand(commandId) {

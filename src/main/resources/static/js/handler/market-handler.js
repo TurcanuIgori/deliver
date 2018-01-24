@@ -13,66 +13,83 @@ function updateMarketForm(market) {
     $('#marketId').val(market.id);
     $('#name').val(market.name);
     $('#ownerId option').each(function (opt, val) {
-        $(this).removeAttr('selected');
-    });
-    $('#usrn_' + market.owner.username).attr('selected', 'selected');
-
-    currentAddress = market.street;
-    $('#countryId option').each(function (opt, val) {
-        $(this).removeAttr('selected');
-    });
-    $('#' + market.street.city.country.name).attr('selected', 'selected');
-    getCitiesByCountry($('#countryId').val(), updateCitiesOnPopulate);
-}
-
-function updateCitiesOnPopulate(res, resStatus) {
-    $('#streetId').attr('disabled', 'disabled');
-    // delete all options
-    $('#streetId option').each(function (opt, val) {
         $(this).remove();
     });
-    // delete all options
-    $('#cityId option').each(function (opt, val) {
+    $('#ownerId')
+        .append($('<option>')
+            .attr('value', 0)
+            .attr('id', 'none_owner')
+            .text('(none)'));
+    findAllUsers(function (res) {
+        $.each(res, function (idx, owner) {
+            $('#ownerId')
+                .append($('<option>')
+                    .attr("value", owner.id)
+                    .attr("id", 'usrn_' + owner.id)
+                    .text(owner.firstName + ' ' + owner.lastName));
+        });
+        $('#usrn_' + market.owner.id).attr('selected', 'selected');
+    });
+
+    currentAddress = market.street;
+    $('#countryId option').each(function (idx, val) {
+        $(this).remove();
+    });
+    $('#countryId')
+        .append($("<option>")
+            .attr('value', 0)
+            .attr('id', 'none_country')
+            .text('(none)'));
+    findAllCountries(function (res) {
+        $.each(res, function (idx, country) {
+            $('#countryId')
+                .append($('<option>')
+                    .attr('value', country.id)
+                    .attr("id", 'contr_' + country.id)
+                    .text(country.name));
+        });
+        $('#contr_' + market.street.city.country.id).attr('selected', 'selected');
+    });
+
+    $('#cityId option').each(function (idx, val) {
         $(this).remove();
     });
     $('#cityId')
-        .append($("<option></option>")
+        .append($("<option>")
             .attr('value', 0)
             .attr('id', 'none_city')
             .text('(none)'));
-    // create options from  taken cities
-    $.each(res, function (index, value) {
-        $('#cityId')
-            .append($('<option>')
-                .attr("value", value.id)
-                .attr("id", value.name)
-                .text(value.name));
-    });
-    $('#' + currentAddress.city.name).attr('selected', 'selected');
     $('#cityId').removeAttr('disabled');
-    getStreetsByCity($("#cityId").val(), updateStreetsOnPopulate);
-}
+    getCitiesByCountry(market.street.city.country.id, function (res) {
+        $.each(res, function (idx, city) {
+            $('#cityId')
+                .append($('<option>')
+                    .attr('value', city.id)
+                    .attr("id", 'city_' + city.id)
+                    .text(city.name));
+        });
+        $('#city_' + market.street.city.id).attr('selected', 'selected');
+    });
 
-function updateStreetsOnPopulate(res, resStatus) {
-    $('#streetId').removeAttr('disabled');
-    // delete all options
-    $('#streetId option').each(function (opt, val) {
+    $('#streetId option').each(function (idx, val) {
         $(this).remove();
     });
     $('#streetId')
-        .append($('<option></option>')
+        .append($("<option>")
             .attr('value', 0)
             .attr('id', 'none_street')
             .text('(none)'));
-    // create options from  taken streets
-    $.each(res, function (index, value) {
-        $('#streetId')
-            .append($('<option>')
-                .attr("value", value.id)
-                .attr("id", 'str_' + value.id)
-                .text(value.name));
+    getStreetsByCity(market.street.city.id, function (res) {
+        $.each(res, function (idx, street) {
+            $('#streetId')
+                .append($('<option>')
+                    .attr('value', street.id)
+                    .attr("id", 'street_' + street.id)
+                    .text(street.name));
+        });
+        $('#streetId').removeAttr('disabled');
+        $('#street_' + market.street.id).attr('selected', 'selected');
     });
-    $('#str_' + currentAddress.id).attr('selected', 'selected');
 }
 
 function toogleModalToDeleteMarket(marketId) {

@@ -37,7 +37,7 @@ public class HomeController {
 
     @GetMapping("/user")
     public String getIndexPage(Model model) {
-        log.info("Request to get index page...");
+        log.debug("Request to get index page...");
         model.addAttribute("users", userRepository.findAllUsers()
                 .collect(Collectors.toList()));
         model.addAttribute("countries", countryRepository.findAllCountries()
@@ -47,7 +47,7 @@ public class HomeController {
 
     @GetMapping("/product")
     public String getProductsPage(Model model) {
-        log.info("Request to get the products page...");
+        log.debug("Request to get the products page...");
         model.addAttribute("products", productRepository.findAllProducts()
                 .collect(Collectors.toList()));
         model.addAttribute("groups", groupRepository.findAllGroups()
@@ -57,7 +57,7 @@ public class HomeController {
 
     @GetMapping("market")
     public String getMarketsPage(Model model) {
-        log.info("Request to get markets page...");
+        log.debug("Request to get markets page...");
         model.addAttribute("markets", marketRepository.findAllMarkets()
                 .collect(Collectors.toList()));
         model.addAttribute("owners", userRepository.findAllByActiveIsTrue()
@@ -69,7 +69,7 @@ public class HomeController {
 
     @GetMapping("command")
     public String getCommandsPage(Model model) {
-        log.info("Request to get commands page...");
+        log.debug("Request to get commands page...");
         model.addAttribute("commands", commandRepository.findAllCommands()
                 .collect(Collectors.toList()));
         model.addAttribute("markets", marketRepository.findAllMarkets()

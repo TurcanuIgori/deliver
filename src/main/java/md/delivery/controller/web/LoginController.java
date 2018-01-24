@@ -13,7 +13,7 @@ public class LoginController {
     // $2a$11$0e/5mLK/ydL9HHtbONu/5uICpzlBBqc4b6ycIlQaZRpLNsxjHRG/K
     @GetMapping("/login")
     public String loginPage(){
-        log.info("Request to get the login page");
+        log.debug("Request to get the login page");
         return "login";
     }
 

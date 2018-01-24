@@ -51,7 +51,7 @@ public class UserController {
 
     @GetMapping("/")
     public List<User> getAllUsers() {
-        log.info("Request to find all users.");
+        log.debug("Request to find all users.");
         return userRepository.findAllUsers()
                 .collect(Collectors.toList());
     }
@@ -64,7 +64,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity findById(@PathVariable("userId") Long userId) {
-        log.info("Request to find user by id: {}", userId);
+        log.debug("Request to find user by id: {}", userId);
         return new ResponseEntity<>(userRepository.findOne(userId), HttpStatus.OK);
     }
 
@@ -75,7 +75,7 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteUser(@PathVariable("userId") Long userId) {
-        log.info("Request to delete user by id: {}", userId);
+        log.debug("Request to delete user by id: {}", userId);
         userService.delete(userId);
         return new ResponseEntity<>("Succes", HttpStatus.OK);
     }
@@ -128,7 +128,7 @@ public class UserController {
             newUser.setRole(role);
         }
         userUtils.saveImage(newUser, picture.getOriginalFilename());
-        log.info("Request to create user: {}", newUser);
+        log.debug("Request to create user: {}", newUser);
         return new ResponseEntity<>(userService.create(newUser), HttpStatus.OK);
     }
 
@@ -184,7 +184,7 @@ public class UserController {
         }
 
         userUtils.saveImage(user, picture.getOriginalFilename());
-        log.info("Request to update user: {}", user);
+        log.debug("Request to update user: {}", user);
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 

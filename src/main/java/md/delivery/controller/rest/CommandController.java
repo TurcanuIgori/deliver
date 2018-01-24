@@ -31,7 +31,7 @@ public class CommandController {
      */
     @GetMapping("/")
     public List<Command> getAllCommands() {
-        log.info("Request to get all commands...");
+        log.debug("Request to get all commands...");
         return commandRepository.findAllCommands()
                 .collect(Collectors.toList());
     }
@@ -41,7 +41,7 @@ public class CommandController {
      */
     @GetMapping("/{commandId}")
     public ResponseEntity getCommandById(@PathVariable("commandId") Long commandId) {
-        log.info("Request to get command by id: {}", commandId);
+        log.debug("Request to get command by id: {}", commandId);
         return new ResponseEntity<>(
                 commandRepository.findById(commandId).get(),
                 HttpStatus.OK);
@@ -52,7 +52,7 @@ public class CommandController {
      */
     @DeleteMapping("/{commandId}")
     public ResponseEntity deleteCommandById(@PathVariable("commandId") Long commandId) {
-        log.info("Request to delete command by id: {}", commandId);
+        log.debug("Request to delete command by id: {}", commandId);
         commandRepository.delete(commandId);
         return new ResponseEntity<>("succes", HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class CommandController {
      */
     @PostMapping("/")
     public ResponseEntity createCommand(@RequestBody Command command) {
-        log.info("Request to create command: {}", command);
+        log.debug("Request to create command: {}", command);
         commandRepository.save(command);
         return new ResponseEntity("succes", HttpStatus.OK);
     }
@@ -72,7 +72,7 @@ public class CommandController {
      */
     @PutMapping("/")
     public ResponseEntity updateCommand(@RequestBody Command command) {
-        log.info("Request to update command: {}", command);
+        log.debug("Request to update command: {}", command);
         commandRepository.save(command);
         return new ResponseEntity("succes", HttpStatus.OK);
     }
