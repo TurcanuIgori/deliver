@@ -108,46 +108,56 @@ function updateAddress(address) {
                     .attr("id", 'contr_' + country.id)
                     .text(country.name));
         });
-        $('#contr_' + address.city.country.id).attr('selected', 'selected');
+        if (address) {
+            $('#contr_' + address.city.country.id).attr('selected', 'selected');
+        }
     });
-
-    $('#cityId option').each(function (idx, val) {
-        $(this).remove();
-    });
-    $('#cityId')
-        .append($("<option>")
-            .attr('value', 0)
-            .attr('id', 'none_city')
-            .text('(none)'));
-    $('#cityId').removeAttr('disabled');
-    getCitiesByCountry(address.city.country.id, function (res) {
-        $.each(res, function (idx, city) {
-            $('#cityId')
-                .append($('<option>')
-                    .attr('value', city.id)
-                    .attr("id", 'city_' + city.id)
-                    .text(city.name));
+    if (address) {
+        $('#cityId option').each(function (idx, val) {
+            $(this).remove();
         });
-        $('#city_' + address.city.id).attr('selected', 'selected');
-    });
-
-    $('#streetId option').each(function (idx, val) {
-        $(this).remove();
-    });
-    $('#streetId')
-        .append($("<option>")
-            .attr('value', 0)
-            .attr('id', 'none_street')
-            .text('(none)'));
-    getStreetsByCity(address.city.id, function (res) {
-        $.each(res, function (idx, street) {
-            $('#streetId')
-                .append($('<option>')
-                    .attr('value', street.id)
-                    .attr("id", 'street_' + street.id)
-                    .text(street.name));
+        $('#cityId')
+            .append($("<option>")
+                .attr('value', 0)
+                .attr('id', 'none_city')
+                .text('(none)'));
+        getCitiesByCountry(address.city.country.id, function (res) {
+            $.each(res, function (idx, city) {
+                $('#cityId')
+                    .append($('<option>')
+                        .attr('value', city.id)
+                        .attr("id", 'city_' + city.id)
+                        .text(city.name));
+            });
+            if (address) {
+                $('#city_' + address.city.id).attr('selected', 'selected');
+            }
         });
-        $('#streetId').removeAttr('disabled');
-        $('#street_' + address.id).attr('selected', 'selected');
-    });
+
+        $('#streetId option').each(function (idx, val) {
+            $('#cityId').removeAttr('disabled');
+            $(this).remove();
+        });
+        $('#streetId')
+            .append($("<option>")
+                .attr('value', 0)
+                .attr('id', 'none_street')
+                .text('(none)'));
+        getStreetsByCity(address.city.id, function (res) {
+            $.each(res, function (idx, street) {
+                $('#streetId')
+                    .append($('<option>')
+                        .attr('value', street.id)
+                        .attr("id", 'street_' + street.id)
+                        .text(street.name));
+            });
+            $('#streetId').removeAttr('disabled');
+            $('#street_' + address.id).attr('selected', 'selected');
+
+        });
+    } else {
+        $('#cityId').attr('disabled', 'disabled');
+        $('#streetId').attr('disabled', 'disabled');
+
+    }
 }

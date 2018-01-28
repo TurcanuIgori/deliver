@@ -39,7 +39,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity getProductyId(@PathVariable("productId") Long productId) {
         log.debug("Request to get product by id: {}", productId);
-        return new ResponseEntity(
+        return new ResponseEntity<>(
                 productRepository.findProductById(productId).get(),
                 HttpStatus.OK
         );
@@ -51,7 +51,7 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity createProduct(@RequestBody Product product) {
         log.debug("Request to create new product: {}", product);
-        return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.OK);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ProductController {
     @PutMapping("/")
     public ResponseEntity updateProduct(@RequestBody Product product) {
         log.debug("Request to update product: {}", product);
-        return new ResponseEntity(productRepository.save(product), HttpStatus.OK);
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.OK);
     }
 
     /**
@@ -70,6 +70,6 @@ public class ProductController {
     public ResponseEntity deleteProduct(@PathVariable("productId") Long productId) {
         log.debug("Request to delete product with id: {}", productId);
         productRepository.delete(productId);
-        return new ResponseEntity("succes", HttpStatus.OK);
+        return new ResponseEntity<>("succes", HttpStatus.OK);
     }
 }

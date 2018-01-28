@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ToString(exclude = "commandProducts, deliver")
+@ToString(exclude = {"commandProducts", "deliver"}, callSuper = false)
 @EqualsAndHashCode(exclude = "commandProducts")
 @Entity
 @Table(name = "command")

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -34,21 +33,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.formLogin()
-            .loginPage("/login")
-            .loginProcessingUrl("/login")
-            .failureUrl("/login/error")
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .permitAll();
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .failureUrl("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .permitAll();
         http.logout()
-            .permitAll()
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/login?logout")
-            .invalidateHttpSession(true);
+                .permitAll()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true);
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder(){
+    public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder(11);
     }
 

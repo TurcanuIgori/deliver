@@ -1,6 +1,7 @@
 package md.delivery.controller.rest;
 
 import md.delivery.entity.Command;
+import md.delivery.repository.CommandProductRepository;
 import md.delivery.repository.CommandRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Controller for CRUD operations with the {@Command} entity.
+ * Controller for CRUD operations with the {@link Command} entity.
  */
 @RestController
 @RequestMapping("/commands")
@@ -25,6 +26,9 @@ public class CommandController {
 
     @Autowired
     private CommandRepository commandRepository;
+
+    @Autowired
+    private CommandProductRepository commandProductRepository;
 
     /**
      * GET - /commands/ - get all commands
@@ -63,6 +67,10 @@ public class CommandController {
     @PostMapping("/")
     public ResponseEntity createCommand(@RequestBody Command command) {
         log.debug("Request to create command: {}", command);
+        command.setCommandProducts(command.getCommandProducts().stream()
+                .map(commandProduct -> commandProductRepository.save(commandProduct))
+                .collect(Collectors.toList())
+        );
         commandRepository.save(command);
         return new ResponseEntity("succes", HttpStatus.OK);
     }
@@ -73,6 +81,10 @@ public class CommandController {
     @PutMapping("/")
     public ResponseEntity updateCommand(@RequestBody Command command) {
         log.debug("Request to update command: {}", command);
+        command.setCommandProducts(command.getCommandProducts().stream()
+                .map(commandProduct -> commandProductRepository.save(commandProduct))
+                .collect(Collectors.toList())
+        );
         commandRepository.save(command);
         return new ResponseEntity("succes", HttpStatus.OK);
     }

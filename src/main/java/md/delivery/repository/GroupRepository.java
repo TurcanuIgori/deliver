@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.stream.Stream;
 
+/**
+ * Repository for the {@link Group} entity.
+ */
 @Repository
 public interface GroupRepository extends CrudRepository<Group, Long> {
 

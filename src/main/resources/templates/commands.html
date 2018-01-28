@@ -11,6 +11,7 @@
     <script src="js/service/command-service.js"></script>
     <script src="js/service/user-service.js"></script>
     <script src="js/service/market-service.js"></script>
+    <script src="js/service/product-service.js"></script>
     <script src="js/handler/command-handler.js"></script>
     <script src="js/libraries/tether.min.js"></script>
     <script src="js/libraries/bootstrap.min.js"></script>
@@ -93,7 +94,7 @@
                         <tr th:each="command:${commands}">
                             <td th:text="${command.deliver.firstName + ' ' + command.deliver.lastName}"></td>
                             <td th:text="${command.market.name}"></td>
-                            <td th:each="cProduct:${command.commandProducts}" th:text="${cProduct?.name + ' '}"></td>
+                            <td th:each="comandProduct:${command.commandProducts}" th:text="${comandProduct?.product.name + ' '}"></td>
                             <td th:text="${command?.totalPrice}"></td>
                             <td>
                                 <a style="margin: 5px;" class="btn btn-outline-primary"
@@ -141,24 +142,31 @@
                         <input type="hidden" form="commandSaveForm" class="form-control" id="commandId"
                                name="commandId"/>
                         <select class="form-control" id="deliverId" name="deliverId" form="commandSaveForm">
-                            <option value="0" id="owner_none">(none)</option>
-                            <option th:each="deliver : ${delivers}"
-                                    th:value="${deliver.id}"
-                                    th:id="${'deliver_' + deliver.id}"
-                                    th:text="${deliver.firstName} + ' ' + ${deliver.lastName}"></option>
                         </select>
                         <span id="deliverIdHelper" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="marketId">Market:</label>
                         <select class="form-control" id="marketId" name="marketId" form="commandSaveForm">
-                            <option value="0" id="market_none">(none)</option>
-                            <option th:each="market : ${markets}"
-                                    th:value="${market.id}"
-                                    th:id="${'market_' + market.id}"
-                                    th:text="${market.name}"></option>
                         </select>
                         <span id="marketIdHelper" class="text-danger"></span>
+                    </div>
+                    <!--please impliment this functional JUST DO IT-->
+                    <label for="productId1">Product(s):</label>
+                    <div id="oproduct_1" class="col-sm-15 row">
+                        <div class="col-sm-7">
+                            <input type="hidden" id="cproductId_1"  form="commandSaveForm"/>
+                            <select class="form-control" id="productId1" name="productId" form="commandSaveForm">
+                                <option value="0" id="product_none">(none)</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="qproduct_1" type="text"  form="commandSaveForm"/>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-outline-primary" onclick="addOProduct('oproduct_1')">+</a>
+                        </div>
+                        <span id="productId0Helper" class="text-danger"></span>
                     </div>
                 </form>
             </div>

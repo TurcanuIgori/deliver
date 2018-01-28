@@ -90,11 +90,6 @@ function resetUserForm() {
     $('#lastName').val('');
     $('#username').val('');
     $('#email').val('');
-    $('#addressID').val('');
-    $('#street').val('');
-    $('#city').val('');
-    $('#region').val('');
-    $('#country').val('');
     $('#dob').val('');
     $('#password').val('');
     $('#repeatPassword').val('');
@@ -105,6 +100,7 @@ function resetUserForm() {
     $('#ROLE_ADMIN').removeAttr('selected');
     $('#ROLE_USER').removeAttr('selected');
     $('#ROLE_NONE').attr('selected', 'selected');
+    updateAddress();
 }
 
 function validateUserForm() {
