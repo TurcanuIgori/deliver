@@ -1,3 +1,12 @@
+$(document).ready(function () {
+    var appCache = window.applicationCache;
+    console.log(window.applicationCache.status);
+    appCache.update();
+    if (appCache.status == window.applicationCache.UPDATEREADY) {
+        appCache.swapCache();
+    }
+});
+
 // pagination configuration
 var paginationConfig = {
     perPage: 5,

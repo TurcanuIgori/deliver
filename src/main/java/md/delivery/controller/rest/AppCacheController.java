@@ -12,10 +12,8 @@ public class AppCacheController {
 
     /**
      * This controller return a file of the "text/cache-manifest" type witch contains urls of the cache files.
-     *
-     * @return - urls to cache
      */
-    @GetMapping(value = "/manifest.appcache", produces = "text/cache-manifest")
+    @GetMapping(value = "/users-manifest-appcache", produces = "text/cache-manifest")
     public String offMainifest() {
         StringBuilder manifestFileContent = new StringBuilder();
         manifestFileContent.append("CACHE MANIFEST\n");
@@ -23,11 +21,16 @@ public class AppCacheController {
                 // urls to css files
                 "css/bootstrap.min.css\n" +
                 "css/dashboard.css\n" +
+                "css/grid.css\n" +
                 // urls to javascript files
-                "js/libraries/jquery-3.2.1.min.js\n" +
+                "webjars/jquery/2.2.4/jquery.min.js\n" +
+                "js/service/address-service.js\n" +
+                "js/handler/address-handler.js\n" +
+                "js/service/user-service.js\n" +
+                "js/handler/user-handler.js\n" +
                 "js/libraries/tether.min.js\n" +
-                "js/libraries/holder.min.js\n" +
-                "js/libraries/bootstrap.min.js"
+                "js/libraries/bootstrap.min.js\n" +
+                "/users-manifest-appcache\n"
         );
         log.debug("Request to get manifest.appcache file: {}", manifestFileContent.toString());
         return manifestFileContent.toString();
