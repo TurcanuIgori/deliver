@@ -49,7 +49,16 @@ function getCitiesByCountry(countryId, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            findAllCities(function (cities) {
+                var citiesByCountryId = [];
+                for (i = 0; i < cities.length; i++) {
+                    var city = cities[i];
+                    if (city.country.id == countryId) {
+                        citiesByCountryId.add(city);
+                    }
+                }
+                callback(citiesByCountryId);
+            });
         }
     });
 }
@@ -63,7 +72,16 @@ function getStreetsByCity(cityId, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            findAllStreets(function(streets) {
+                var streetsByCityId = [];
+                for (i = 0; i < streets.length) {
+                    var street = streets[i];
+                    if (street.city.id == cityId) {
+                        streetsByCityId.add(street);
+                    }
+                }
+                callback(streetsByCityId);
+            });
         }
     });
 }

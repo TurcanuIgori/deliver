@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html manifest="manifest.appcache" type="text/cache-manifest" xmlns="http://www.w3.org/1999/xhtml"
+<html manifest="manifest-appcache" type="text/cache-manifest" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Markets</title>
+    <title>Commands</title>
     <script type="text/javascript"
-            src="webjars/jquery/2.2.4/jquery.min.js"></script>
+            src="webjars/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/dashboard.css"/>
     <link rel="stylesheet" href="css/grid.css"/>
-    <script src="js/service/command-service.js"></script>
+    <script src="js/service/comm-service.js"></script>
     <script src="js/service/user-service.js"></script>
     <script src="js/service/market-service.js"></script>
     <script src="js/service/product-service.js"></script>
-    <script src="js/handler/command-handler.js"></script>
+    <script src="js/handler/comm-handler.js"></script>
     <script src="js/libraries/tether.min.js"></script>
     <script src="js/libraries/bootstrap.min.js"></script>
     <!--<link rel="stylesheet" href="https://cdn.rawgit.com/infostreams/bootstrap-select/fd227d46de2afed300d97fd0962de80fa71afb3b/dist/css/bootstrap-select.min.css" />-->
 </head>
-<body>
+<body onload="onLoad()">
 <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
     <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse"
             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"
@@ -70,7 +70,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col col-xs-6">
-                            <h3 class="panel-title">Manage Cmmands</h3>
+                            <h3 class="panel-title">Manage Commands</h3>
                         </div>
                         <div class="col col-xs-6 text-right">
                             <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal"

@@ -20,7 +20,14 @@ function findMarketById(id, callback) {
             callback(res);
         },
         error: function (res, textStatus) {
-            callback(res);
+            findAllMarkets(function (markets) {
+                for (i = 0; i < markets.length; y++) {
+                    var market = markets[i];
+                    if (market.id == id) {
+                        callback(res);
+                    }
+                }
+            });
         }
     });
 }

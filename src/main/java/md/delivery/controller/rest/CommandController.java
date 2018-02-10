@@ -31,7 +31,7 @@ public class CommandController {
     private CommandProductRepository commandProductRepository;
 
     /**
-     * GET - /commands/ - get all commands
+     * GET - /comm/ - get all commands
      */
     @GetMapping("/")
     public List<Command> getAllCommands() {
@@ -41,7 +41,7 @@ public class CommandController {
     }
 
     /**
-     * GET - /commands/{commandId} get command by id
+     * GET - /comm/{commandId} get command by id
      */
     @GetMapping("/{commandId}")
     public ResponseEntity getCommandById(@PathVariable("commandId") Long commandId) {
@@ -52,7 +52,7 @@ public class CommandController {
     }
 
     /**
-     * DELETE - /commands/{commandId} - delete command by id
+     * DELETE - /comm/{commandId} - delete command by id
      */
     @DeleteMapping("/{commandId}")
     public ResponseEntity deleteCommandById(@PathVariable("commandId") Long commandId) {
@@ -62,7 +62,7 @@ public class CommandController {
     }
 
     /**
-     * POST - /commands/ - create new command
+     * POST - /comm/ - create new command
      */
     @PostMapping("/")
     public ResponseEntity createCommand(@RequestBody Command command) {
@@ -76,7 +76,7 @@ public class CommandController {
     }
 
     /**
-     * PUT - /commands/ - update command
+     * PUT - /comm/ - update command
      */
     @PutMapping("/")
     public ResponseEntity updateCommand(@RequestBody Command command) {
