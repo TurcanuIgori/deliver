@@ -28,7 +28,7 @@ public class MarketController {
      */
     @GetMapping("/")
     public List<Market> getAllMarkets() {
-        log.info("Request to get all markets...");
+        log.debug("Request to get all markets...");
         return marketRepository.findAllMarkets()
                 .collect(Collectors.toList());
     }
@@ -38,7 +38,7 @@ public class MarketController {
      */
     @GetMapping("/{marketId}")
     public ResponseEntity getProductyId(@PathVariable("marketId") Long marketId) {
-        log.info("Request to get market by id: {}", marketId);
+        log.debug("Request to get market by id: {}", marketId);
         return new ResponseEntity(
                 marketRepository.findOne(marketId),
                 HttpStatus.OK
@@ -50,7 +50,7 @@ public class MarketController {
      */
     @PostMapping("/")
     public ResponseEntity createMarket(@RequestBody Market market) {
-        log.info("Request to create new market: {}", market);
+        log.debug("Request to create new market: {}", market);
         marketRepository.save(market);
         return new ResponseEntity("succes", HttpStatus.OK);
     }
@@ -60,7 +60,7 @@ public class MarketController {
      */
     @PutMapping("/")
     public ResponseEntity updateMarket(@RequestBody Market market) {
-        log.info("Request to update market: {}", market);
+        log.debug("Request to update market: {}", market);
         marketRepository.save(market);
         return new ResponseEntity("succes", HttpStatus.OK);
     }
@@ -70,7 +70,7 @@ public class MarketController {
      */
     @DeleteMapping("{marketId}")
     public ResponseEntity deleteMarket(@PathVariable("marketId") Long marketId) {
-        log.info("Request to delete market with id: {}", marketId);
+        log.debug("Request to delete market with id: {}", marketId);
         marketRepository.delete(marketId);
         return new ResponseEntity("succes", HttpStatus.OK);
     }

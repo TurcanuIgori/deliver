@@ -24,10 +24,22 @@ public class CityController {
     @Autowired
     private CityRepository cityRepository;
 
+    /**
+     * GET - /cities/by-country/{countryId} - get cities by {@Country#id}
+     */
     @GetMapping("/by-country/{countryId}")
     public List<City> getCitiesByCountry(@PathVariable("countryId") Long countryId) {
-        log.info("Request to get cities by countryId: {}", countryId);
+        log.debug("Request to get cities by countryId: {}", countryId);
         return cityRepository.findByCountryId(countryId)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * GET - /cities/ - get all cities
+     */
+    @GetMapping("/")
+    public List<City> getAllCities() {
+        return cityRepository.findAllCities()
                 .collect(Collectors.toList());
     }
 }

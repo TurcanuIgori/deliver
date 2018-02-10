@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-
+/**
+ * Repository for the {@link User} entity.
+ */
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 

@@ -32,11 +32,14 @@ public class HomeController {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    private CommandRepository commandRepository;
+
     @GetMapping("/user")
     public String getIndexPage(Model model) {
-        log.info("Request to get index page...");
+        log.debug("Request to get index page...");
         model.addAttribute("users", userRepository.findAllUsers()
-            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         model.addAttribute("countries", countryRepository.findAllCountries()
                 .collect(Collectors.toList()));
         return "users";
@@ -44,7 +47,7 @@ public class HomeController {
 
     @GetMapping("/product")
     public String getProductsPage(Model model) {
-        log.info("Request to get the products page...");
+        log.debug("Request to get the products page...");
         model.addAttribute("products", productRepository.findAllProducts()
                 .collect(Collectors.toList()));
         model.addAttribute("groups", groupRepository.findAllGroups()
@@ -54,7 +57,7 @@ public class HomeController {
 
     @GetMapping("market")
     public String getMarketsPage(Model model) {
-        log.info("Request to get markets page...");
+        log.debug("Request to get markets page...");
         model.addAttribute("markets", marketRepository.findAllMarkets()
                 .collect(Collectors.toList()));
         model.addAttribute("owners", userRepository.findAllByActiveIsTrue()
@@ -62,6 +65,18 @@ public class HomeController {
         model.addAttribute("countries", countryRepository.findAllCountries()
                 .collect(Collectors.toList()));
         return "markets";
+    }
+
+    @GetMapping("command")
+    public String getCommandsPage(Model model) {
+        log.debug("Request to get commands page...");
+        model.addAttribute("commands", commandRepository.findAllCommands()
+                .collect(Collectors.toList()));
+        model.addAttribute("markets", marketRepository.findAllMarkets()
+                .collect(Collectors.toList()));
+        model.addAttribute("delivers", userRepository.findAllByActiveIsTrue()
+                .collect(Collectors.toList()));
+        return "commands";
     }
 
 }

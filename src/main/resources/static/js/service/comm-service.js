@@ -1,30 +1,36 @@
-// GET - /markets/ - get all markets
-function findAllMarkets(callback) {
+// GET - /comms/ - get all commands dependently by current authorized role
+function findAllCommands(callback) {
     $.ajax({
-        url: "markets/",
-        async: true,
+        url: 'commands/',
+        // async: true,
+        method: 'GET',
         success: function (res, textStatus) {
+            console.log(res);
             callback(res);
         },
         error: function (err) {
+            console.log(err.responseText);
             console.error('Hudson, we have a problem....server respose status is: '+ err.status);
         }
     });
 }
-// GET - /markets/marketId - find market by id
-function findMarketById(id, callback) {
+
+// GET - /comms/ - find command by id
+function findCommandById(id, callback) {
     $.ajax({
-        url: "markets/" + id,
+        url: 'commands/' + id,
         async: true,
+        type: 'GET',
         success: function (res, textStatus) {
             callback(res);
         },
         error: function (res, textStatus) {
-            findAllMarkets(function (markets) {
-                for (i = 0; i < markets.length; y++) {
-                    var market = markets[i];
-                    if (market.id == id) {
-                        callback(res);
+            findAllCommands(function (commands) {
+                for (i = 0; i < commands.length; i++) {
+                    var command = commands[i];
+                    if (command.id == id) {
+                        callback(command);
+                        return;
                     }
                 }
             });
@@ -32,11 +38,11 @@ function findMarketById(id, callback) {
     });
 }
 
-// DELETE - /markets/marketId- delete market by id
-function deleteMarketById(id, callback) {
+// DELETE - /comms/- delete command by id
+function deleteCommandById(id, callback) {
     $.ajax({
-        url: "markets/" + id,
-        method: 'DELETE',
+        url: "commands/" + id,
+        type: 'DELETE',
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
@@ -46,10 +52,10 @@ function deleteMarketById(id, callback) {
     });
 }
 
-// PUT - /markets/ - update market
-function updateMarket(data, callback) {
+// PUT - /comms/ - update command
+function updateCommand(data, callback) {
     $.ajax({
-        url: 'markets/',
+        url: 'commands/',
         type : 'PUT',
         data: JSON.stringify(data),
         contentType: "application/json;charset=utf-8",
@@ -62,10 +68,10 @@ function updateMarket(data, callback) {
     });
 }
 
-// POST - /markets/ - create market
-function createMarket(data, callback) {
+// POST - /comms/ - create command
+function createCommand(data, callback) {
     $.ajax({
-        url: 'markets/',
+        url: 'commands',
         type : 'POST',
         contentType: "application/json;charset=utf-8",
         data: JSON.stringify(data),

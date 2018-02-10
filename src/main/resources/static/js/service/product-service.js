@@ -20,7 +20,14 @@ function findProductById(id, callback) {
             callback(res);
         },
         error: function (res, textStatus) {
-            callback(res);
+            findAllProducts(function (products) {
+                for (i = 0; i < products.length; i++) {
+                    var product = products[i];
+                    if (product.id == id) {
+                        callback(product);
+                    }
+                }
+            });
         }
     });
 }

@@ -48,8 +48,8 @@ public class UserUtils {
                out.close();
                user.setPathToPicture(user.getUsername() + getNameOfImage(completeFileName));
            } catch (Exception e) {
-               log.info("Error to save the user image. Exception is: {}", e);
-               log.info("Set default image.");
+               log.debug("Error to save the user image. Exception is: {}", e);
+               log.debug("Set default image.");
                user.setPathToPicture(PATH_TO_DEFAULT_USER_IMAGE);
            }
         } else if (Objects.nonNull(user.getId())) {

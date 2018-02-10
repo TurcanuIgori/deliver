@@ -21,7 +21,15 @@ function findUserById(id, callback) {
             callback(res);
         },
         error: function (res, textStatus) {
-            callback(res);
+            findAllUsers(function (users) {
+                for (i = 0; i< users.length; i++) {
+                    var user = users[i];
+                    if (user.id == id) {
+                        callback(id);
+                        return;
+                    }
+                }
+            });
         }
     });
 }

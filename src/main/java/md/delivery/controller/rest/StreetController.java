@@ -24,10 +24,24 @@ public class StreetController {
     @Autowired
     private StreetRepository streetRepository;
 
+    /**
+     * GET - /streets/by-city/{cityId} - get streets by city id
+     *
+     * @param cityId - {@link Street#city#id}
+     */
     @GetMapping("/by-city/{cityId}")
     public List<Street> getStreetsByCity(@PathVariable("cityId") Long cityId) {
-        log.info("Request to get streets by city id: {}", cityId);
+        log.debug("Request to get streets by city id: {}", cityId);
         return streetRepository.findStreetsByCityId(cityId)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * GET - /streets/ - get all streets
+     */
+    @GetMapping("/")
+    public List<Street> getAllStreets() {
+        return streetRepository.findAllStreet()
                 .collect(Collectors.toList());
     }
 }

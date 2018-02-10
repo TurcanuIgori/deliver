@@ -1,9 +1,7 @@
 package md.delivery.controller.rest;
 
-import md.delivery.entity.Group;
-import md.delivery.repository.GroupRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import md.delivery.entity.Country;
+import md.delivery.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,22 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/groups")
+@RequestMapping("/countries")
 @PreAuthorize("isFullyAuthenticated()")
-public class GroupController {
-
-    private final Logger log = LoggerFactory.getLogger(GroupController.class);
+public class CountryController {
 
     @Autowired
-    private GroupRepository groupRepository;
+    private CountryRepository countryRepository;
 
-    /**
-     * GET - /groups/ - return all groups
-     */
     @GetMapping("/")
-    public List<Group> getAllGroups() {
-        log.debug("Request to get all group of products...");
-        return groupRepository.findAllGroups()
+    public List<Country> getAllCountries() {
+        return countryRepository.findAllCountries()
                 .collect(Collectors.toList());
     }
 }

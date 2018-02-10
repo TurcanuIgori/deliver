@@ -1,6 +1,5 @@
 package md.delivery.controller.rest;
 
-import md.delivery.entity.Address;
 import md.delivery.entity.Role;
 import md.delivery.entity.Street;
 import md.delivery.entity.User;
@@ -20,7 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -47,9 +49,9 @@ public class UserController {
 
     private static Long ID_OF_ROLE_USER = 2L;
 
-    @GetMapping("list")
+    @GetMapping("/")
     public List<User> getAllUsers() {
-        log.info("Request to find all users.");
+        log.debug("Request to find all users.");
         return userRepository.findAllUsers()
                 .collect(Collectors.toList());
     }
@@ -62,8 +64,8 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity findById(@PathVariable("userId") Long userId) {
-        log.info("Request to find user by id: {}", userId);
-        return new ResponseEntity(userRepository.findOne(userId), HttpStatus.OK);
+        log.debug("Request to find user by id: {}", userId);
+        return new ResponseEntity<>(userRepository.findOne(userId), HttpStatus.OK);
     }
 
     /**
@@ -73,9 +75,9 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     public ResponseEntity deleteUser(@PathVariable("userId") Long userId) {
-        log.info("Request to delete user by id: {}", userId);
+        log.debug("Request to delete user by id: {}", userId);
         userService.delete(userId);
-        return new ResponseEntity("Succes", HttpStatus.OK);
+        return new ResponseEntity<>("Succes", HttpStatus.OK);
     }
 
     /**
@@ -111,7 +113,7 @@ public class UserController {
                 .dob(LocalDate.parse(dob))
                 .email(email)
                 .build();
-        if (streetId.length() != 0) {
+        if (Objects.nonNull(streetId) && streetId.length() != 0) {
             Street street = new Street();
             street.setId(new Long(streetId));
             newUser.setStreet(street);
@@ -126,7 +128,7 @@ public class UserController {
             newUser.setRole(role);
         }
         userUtils.saveImage(newUser, picture.getOriginalFilename());
-        log.info("Request to create user: {}", newUser);
+        log.debug("Request to create user: {}", newUser);
         return new ResponseEntity<>(userService.create(newUser), HttpStatus.OK);
     }
 
@@ -182,7 +184,7 @@ public class UserController {
         }
 
         userUtils.saveImage(user, picture.getOriginalFilename());
-        log.info("Request to update user: {}", user);
+        log.debug("Request to update user: {}", user);
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
@@ -193,11 +195,7 @@ public class UserController {
             InputStream is = new FileInputStream(new File(UserUtils.getPathToUserImages() + userRepository.findByUsernameIs(username).get().getPathToPicture()));
             response.getOutputStream().write(IOUtils.toByteArray(is));
             response.getOutputStream().close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

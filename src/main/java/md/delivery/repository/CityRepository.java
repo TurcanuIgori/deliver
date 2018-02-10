@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.stream.Stream;
 
+/**
+ * Repository for the {@link City} entity.
+ */
 @Repository
 public interface CityRepository extends CrudRepository<City, Long> {
 
