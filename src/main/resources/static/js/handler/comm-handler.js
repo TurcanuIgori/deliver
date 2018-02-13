@@ -39,6 +39,13 @@ function toogleModalToDeleteCommand(commandId) {
 
 function deleteCommandCallbak(res, resStatus) {
     if (resStatus == 'success') {
+        applicationCache.addEventListener('updateready', function () {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                window.applicationCache.swapCache();
+                console.log("appcache updated");
+                window.location.reload();
+            }
+        });
         location.reload();
     }
 }
@@ -83,12 +90,20 @@ function saveCommandHandler() {
 function commandSavedAction(res, textStatus) {
     if (textStatus == 'success') {
         $('#exampleModal').modal('toggle');
+        applicationCache.addEventListener('updateready', function () {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                window.applicationCache.swapCache();
+                console.log("appcache updated");
+                window.location.reload();
+            }
+        });
         location.reload();
     }
 }
 
 function resetCommandForm() {
     $('#commandId').val('');
+    $('#qproduct_1').val('');
     updateSelects();
 }
 

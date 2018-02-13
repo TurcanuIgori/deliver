@@ -82,13 +82,11 @@ function resetAddressDropdowns() {
         .append($('<option></option>')
             .attr('value', 0)
             .attr('id', 'none_city')
-            // .attr('selected', 'selected')
             .text('(none)'));
 
     $('#countryId option').each(function (opt, val) {
         $(this).removeAttr('selected');
     });
-    // $('#countryId').attr('selected', 'selected');
 }
 
 function updateAddress(address) {

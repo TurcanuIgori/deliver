@@ -1,4 +1,4 @@
-// GET - /comms/ - get all commands dependently by current authorized role
+// GET - /commands/ - get all commands dependently by current authorized role
 function findAllCommands(callback) {
     $.ajax({
         url: 'commands/',
@@ -15,7 +15,7 @@ function findAllCommands(callback) {
     });
 }
 
-// GET - /comms/ - find command by id
+// GET - /commands/ - find command by id
 function findCommandById(id, callback) {
     $.ajax({
         url: 'commands/' + id,
@@ -38,7 +38,7 @@ function findCommandById(id, callback) {
     });
 }
 
-// DELETE - /comms/- delete command by id
+// DELETE - /commands/- delete command by id
 function deleteCommandById(id, callback) {
     $.ajax({
         url: "commands/" + id,
@@ -47,12 +47,12 @@ function deleteCommandById(id, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res);
+            deleteCommandFromLocalDB(id, callback);
         }
     });
 }
 
-// PUT - /comms/ - update command
+// PUT - /commands/ - update command
 function updateCommand(data, callback) {
     $.ajax({
         url: 'commands/',
@@ -63,12 +63,12 @@ function updateCommand(data, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            insertCommandInLocalDB(data, callback);
         }
     });
 }
 
-// POST - /comms/ - create command
+// POST - /commands/ - create command
 function createCommand(data, callback) {
     $.ajax({
         url: 'commands',
@@ -79,7 +79,7 @@ function createCommand(data, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            updateCommandInLocalDB(data, callback);
         }
     });
 }

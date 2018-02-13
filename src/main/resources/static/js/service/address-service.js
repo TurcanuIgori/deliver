@@ -74,7 +74,7 @@ function getStreetsByCity(cityId, callback) {
         error: function (res, textStatus) {
             findAllStreets(function(streets) {
                 var streetsByCityId = [];
-                for (i = 0; i < streets.length) {
+                for (i = 0; i < streets.length; i++) {
                     var street = streets[i];
                     if (street.city.id == cityId) {
                         streetsByCityId.add(street);
