@@ -28,6 +28,7 @@ public class AppCacheController {
                 "css/grid.css\n" +
                         // urls to javascript files
                         "webjars/jquery/3.1.1/jquery.min.js\n" +
+                        "js/dao/command-dao.js\n" +
                         "js/service/comm-service.js\n" +
                         "js/service/market-service.js\n" +
                         "js/service/user-service.js\n" +
