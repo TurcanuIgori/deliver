@@ -44,8 +44,7 @@ public class AppCacheController {
                         "/groups/\n" +
                         "/markets/\n" +
                         "/streets/\n" +
-                        "/users/image/" + auth.getName() + "\n"
-
+                "/users/image/" + auth.getName() + "\n"
         );
         log.debug("Request to get manifest.appcache file: {}", manifestFileContent.toString());
         return manifestFileContent.toString();

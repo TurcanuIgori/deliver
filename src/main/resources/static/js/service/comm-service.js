@@ -41,7 +41,7 @@ function findCommandById(id, callback) {
 // DELETE - /commands/- delete command by id
 function deleteCommandById(id, callback) {
     $.ajax({
-        url: "commands/" + id,
+        url: 'commands/' + id,
         type: 'DELETE',
         success: function (res, textStatus) {
             callback(res, textStatus);
@@ -58,7 +58,7 @@ function updateCommand(data, callback) {
         url: 'commands/',
         type : 'PUT',
         data: JSON.stringify(data),
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
@@ -73,7 +73,7 @@ function createCommand(data, callback) {
     $.ajax({
         url: 'commands',
         type : 'POST',
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         data: JSON.stringify(data),
         success: function (res, textStatus) {
             callback(res, textStatus);
