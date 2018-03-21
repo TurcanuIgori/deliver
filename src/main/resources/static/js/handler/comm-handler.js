@@ -80,7 +80,7 @@ function saveCommandHandler() {
             ]
         };
         if (command.id) {
-            updateCommand(command, commandSavedAction)
+            updateCommand(command, commandSavedAction);
         } else {
             createCommand(command, commandSavedAction);
         }
