@@ -63,7 +63,7 @@ function updateCommand(data, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            insertCommandInLocalDB(data, callback);
+            updateCommandInLocalDB(data, callback);
         }
     });
 }
@@ -79,7 +79,8 @@ function createCommand(data, callback) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            updateCommandInLocalDB(data, callback);
+            console.log(data);
+            insertCommandInLocalDB(data, callback);
         }
     });
 }

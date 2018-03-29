@@ -1,23 +1,23 @@
 function onLoad() {
-    //Create the database the parameters are 1. the database name 2.version number 3. a description 4. the size of the database (in bytes) 1024 x 1024 = 1MB
-    var mydb = openDatabase("delivery", "0.1", "Delivery database", 1024 * 1024);
-
-    //create the cars table using SQL for the database using a transaction
-    mydb.transaction(function (tx) {
-        tx.executeSql("CREATE TABLE IF NOT EXISTS commands (id INTEGER PRIMARY KEY ASC, deliver_id INTEGER, market_id INTEGER)");
-    });
-    findAllCommands(function(commands) {
-        for (i = 0; i < commands.length; i++) {
-            var command = commands[i];
-            mydb.transaction(function (tx) {
-                tx.executeSql('INSERT INTO commands (id, deliver_id, market_id) VALUES (command.id, command.owner.id, command.market.id)');
-            });
-        }
-        mydb.transaction(function(tx) {
-            console.log('Select start...');
-            console.log(tx.executeSql('SELECT * FROM commands'));
-        });
-    });
+    // //Create the database the parameters are 1. the database name 2.version number 3. a description 4. the size of the database (in bytes) 1024 x 1024 = 1MB
+    // var mydb = openDatabase("delivery", "0.1", "Delivery database", 1024 * 1024);
+    //
+    // //create the cars table using SQL for the database using a transaction
+    // mydb.transaction(function (tx) {
+    //     tx.executeSql('CREATE TABLE IF NOT EXISTS commands (id INTEGER PRIMARY KEY ASC, deliver_id INTEGER, market_id INTEGER);');
+    // });
+    // findAllCommands(function(commands) {
+    //     for (i = 0; i < commands.length; i++) {
+    //         var command = commands[i];
+    //         mydb.transaction(function (tx) {
+    //             tx.executeSql('INSERT INTO commands (id, deliver_id, market_id) VALUES (command.id, command.owner.id, command.market.id)');
+    //         });
+    //     }
+    //     mydb.transaction(function(tx) {
+    //         console.log('Select start...');
+    //         console.log(tx.executeSql('SELECT * FROM commands'));
+    //     });
+    // });
 }
 
 function toogleModalToCreateCommand() {
