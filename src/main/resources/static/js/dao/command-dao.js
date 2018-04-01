@@ -3,7 +3,7 @@ var errCallback = function (err, err1) {
 };
 
 // initialize database
-var db = openDatabase('mdtest', "1.0", 'Database for delivery app!', 5 * 1024 * 1024, createTables);
+var db = openDatabase('mtest', "1.0", 'Database for delivery app!', 5 * 1024 * 1024, createTables);
 
 // initialize tables
 function createTables() {
@@ -11,6 +11,7 @@ function createTables() {
     db.transaction(function (trx) {
         trx.executeSql("CREATE TABLE IF NOT EXISTS commands (" +
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+            "command_id INTEGER, " +
             "deliver_id INTEGER, " +
             "market_id INTEGER, " +
             "deleted BOOLEAN DEFAULT FALSE);");
@@ -34,9 +35,12 @@ var insertCommandInLocalDB = function (command, callback) {
     if (command.id) {
         updateCommandInLocalDB(command);
     }
+    if (!command.id) {
+        command.id = 0;
+    }
     db.transaction(function(transaction){
-        transaction.executeSql(("INSERT INTO commands (deliver_id, market_id) VALUES (?, ?);"),
-            [command.deliver.id, command.market.id], function (transaction, results) {
+        transaction.executeSql(("INSERT INTO commands (command_id, deliver_id, market_id) VALUES (?, ?, ?);"),
+            [command.id, command.deliver.id, command.market.id], function (transaction, results) {
                 saveCommandProduct(command, results.insertId);
             }, errCallback);
     });
@@ -68,8 +72,6 @@ var saveBinding = function(commandId, results) {
 
 /**
  * {deliver: {id: 1}, market: {id: 2}, commandProducts: [{quantity: 5, product: {id: 1}}, {quantity: 10, product: {id: 2}}]}
- * @param command
- * @param callback
  */
 
 // if {@param command} exist in Web SQL, this function will update it with given parameter else will create it
@@ -90,17 +92,6 @@ function updateCommandInLocalDB(command, callback) {
     saveCommandProduct(command, command.id);
 }
 
-// delete object from Web SQL if given {@param commandId} is not null else return null
-function deleteCommandFromLocalDB(commandId, callback) {
-    if (!commandId) {
-        return false;
-    }
-    alert('Command has been deleted!');
-    // get Web SQL transaction
-    // delete object
-    callback('success');
-}
-
 // load command by Id
 var loadCommandById = function (commandId, successCallback) {
     db.transaction(function(transaction){
@@ -109,11 +100,11 @@ var loadCommandById = function (commandId, successCallback) {
     });
 };
 
-var deleteCommandById = function(commandId, callback) {
+var deleteCommandFromLocalDB = function (commandId, callback) {
     db.transaction(function (transaction) {
-        transaction.executeSql(("UPDATE commands SET deleted='true' WHERE id=?"), [commandId],
-            function (transaction, results) {
-                callback(results);
+        transaction.executeSql(("INSERT INTO commands (command_id, deleted) VALUES (?, ?);"),
+            [commandId, 'TRUE'], function (transaction, results) {
+                console.log('Command has been deleted');
             }, errCallback);
     });
 };
@@ -121,19 +112,97 @@ var deleteCommandById = function(commandId, callback) {
 var deleteAllFromTables = function () {
     db.transaction(function (transaction) {
         transaction.executeSql(("DELETE FROM commands"), [],
-            function (transaction, results) {
-            }, errCallback);
-    });
-
-    db.transaction(function (transaction) {
-        transaction.executeSql(("DELETE FROM commands_command_products"), [],
-            function (transaction, results) {
-            }, errCallback);
-    });
-
-    db.transaction(function (transaction) {
-        transaction.executeSql(("DELETE FROM command_products"), [],
-            function (transaction, results) {
+            function (trx) {
+                trx.executeSql(("DELETE FROM commands_command_products"), [],
+                    function (transaction, results) {
+                        transaction.executeSql(("DELETE FROM command_products"), [],
+                            function (transaction, results) {
+                            }, errCallback);
+                    }, errCallback);
             }, errCallback);
     });
 };
+
+function syncronizeDeletedCommands() {
+    db.transaction(function (trx) {
+        trx.executeSql('SELECT commands.command_id FROM commands WHERE commands.deleted = "TRUE";',
+            [], function (trx, res) {
+                let commandsValues = res.rows,
+                    commandIds = [];
+                for (let i = 0; i < commandsValues.length; i++) {
+                    commandIds.push(commandsValues.item(i).command_id);
+                }
+                if (commandIds) {
+                    $.ajax({
+                        url: 'delete-commands',
+                        type: 'POST',
+                        contentType: 'application/json;charset=utf-8',
+                        data: JSON.stringify(commandIds),
+                        success: function (res, textStatus) {
+                            deleteAllFromTables();
+                            location.reload();
+                        },
+                        error: function (res, textStatus) {
+                            deleteAllFromTables();
+                            console.log(res, textStatus);
+                        }
+                    });
+                }
+            }, errCallback)
+    });
+}
+
+function startSynchronizationProcess(trx, res) {
+    let commandsValues = res.rows,
+        resNumber = res.rows.length,
+        commands = [];
+    if (commandsValues) {
+        for (let i = 0; i < commandsValues.length; i++) {
+            let commandValue = res.rows.item(i),
+                command = {
+                    deliver: {
+                        id: commandValue.deliver_id
+                    },
+                    market: {
+                        id: commandValue.market_id
+                    },
+                    commandProducts: [
+                        {
+                            quantity: commandValue.quantity,
+                            product: {
+                                id: commandValue.product_id
+                            }
+                        }
+                    ]
+                };
+            commands.push(command)
+        }
+        console.log(commandsValues, commands);
+        $.ajax({
+            url: 'syncronize-commands',
+            type: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify(commands),
+            success: function (res, textStatus) {
+                console.log(res, textStatus);
+                syncronizeDeletedCommands();
+            },
+            error: function (res, textStatus) {
+                console.log(res, textStatus);
+            }
+        });
+    }
+}
+
+function updateOnlineStatus() {
+    console.log('Synchronization process has been started...');
+    let isNavigatorOnline = navigator.onLine;
+    if (isNavigatorOnline) {
+        db.transaction(function (trx) {
+            trx.executeSql('SELECT commands.deliver_id, commands.market_id, commands.deleted, command_products.quantity, command_products.product_id FROM commands ' +
+                'INNER JOIN commands_command_products ON commands.id == commands_command_products.command_id ' +
+                'INNER JOIN command_products ON commands_command_products.command_product_id == command_products.id WHERE commands.deleted = "FALSE";',
+                [], startSynchronizationProcess, errCallback)
+        });
+    }
+}
