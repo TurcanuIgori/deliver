@@ -41,5 +41,4 @@ public class Market implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
     )
     private List<Product> products;
-
 }
