@@ -1,71 +1,34 @@
 package md.delivery.controller.rest;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.DocumentException;
+import md.delivery.reports.GeneratePdfReport;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 
 @RestController
-@RequestMapping("/commands-reports")
+@RequestMapping("/reports")
 @PreAuthorize("isFullyAuthenticated()")
 public class CommandReportController {
-    public Object test() throws IOException, DocumentException, URISyntaxException {
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
 
-        document.open();
+    @GetMapping(value = "/generateReportForCommand/{commandId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> test(@PathVariable("commandId") Long commandId, HttpServletRequest request, HttpServletResponse response) throws DocumentException {
+        ByteArrayInputStream bis = GeneratePdfReport.commandReport(commandId);
 
-        PdfPTable table = new PdfPTable(3);
-        addTableHeader(table);
-        addRows(table);
-        addCustomRows(table);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
 
-        document.add(table);
-        document.close();
-        return null;
-    }
-
-    private void addTableHeader(PdfPTable table) {
-        Stream.of("column header 1", "column header 2", "column header 3")
-                .forEach(columnTitle -> {
-                    PdfPCell header = new PdfPCell();
-                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                    header.setBorderWidth(2);
-                    header.setPhrase(new Phrase(columnTitle));
-                    table.addCell(header);
-                });
-    }
-
-    private void addRows(PdfPTable table) {
-        table.addCell("row 1, col 1");
-        table.addCell("row 1, col 2");
-        table.addCell("row 1, col 3");
-    }
-
-    private void addCustomRows(PdfPTable table) throws URISyntaxException, BadElementException, IOException {
-        Path path = Paths.get(ClassLoader.getSystemResource("Java_logo.png").toURI());
-        Image img = Image.getInstance(path.toAbsolutePath().toString());
-        img.scalePercent(10);
-
-        PdfPCell imageCell = new PdfPCell(img);
-        table.addCell(imageCell);
-
-        PdfPCell horizontalAlignCell = new PdfPCell(new Phrase("row 2, col 2"));
-        horizontalAlignCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(horizontalAlignCell);
-
-        PdfPCell verticalAlignCell = new PdfPCell(new Phrase("row 2, col 3"));
-        verticalAlignCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-        table.addCell(verticalAlignCell);
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 }
