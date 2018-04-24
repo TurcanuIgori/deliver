@@ -31,7 +31,7 @@ public class CommandController {
     private CommandProductRepository commandProductRepository;
 
     /**
-     * GET - /comm/ - get all commands
+     * GET - /commands/ - get all commands
      */
     @GetMapping("/")
     public List<Command> getAllCommands() {
@@ -41,7 +41,7 @@ public class CommandController {
     }
 
     /**
-     * GET - /comm/{commandId} get command by id
+     * GET - /commands/{commandId} get command by id
      */
     @GetMapping("/{commandId}")
     public ResponseEntity getCommandById(@PathVariable("commandId") Long commandId) {
@@ -52,7 +52,7 @@ public class CommandController {
     }
 
     /**
-     * DELETE - /comm/{commandId} - delete command by id
+     * DELETE - /commands/{commandId} - delete command by id
      */
     @DeleteMapping("/{commandId}")
     public ResponseEntity deleteCommandById(@PathVariable("commandId") Long commandId) {
@@ -62,13 +62,13 @@ public class CommandController {
     }
 
     /**
-     * POST - /comm/ - create new command
+     * POST - /commands/ - create new command
      */
     @PostMapping("/")
     public ResponseEntity createCommand(@RequestBody Command command) {
         log.debug("Request to create command: {}", command);
         command.setCommandProducts(command.getCommandProducts().stream()
-                .map(commandProduct -> commandProductRepository.save(commandProduct))
+                .map(commandProductRepository::save)
                 .collect(Collectors.toList())
         );
         commandRepository.save(command);
@@ -76,13 +76,13 @@ public class CommandController {
     }
 
     /**
-     * PUT - /comm/ - update command
+     * PUT - /commands/ - update command
      */
     @PutMapping("/")
     public ResponseEntity updateCommand(@RequestBody Command command) {
         log.debug("Request to update command: {}", command);
         command.setCommandProducts(command.getCommandProducts().stream()
-                .map(commandProduct -> commandProductRepository.save(commandProduct))
+                .map(commandProductRepository::save)
                 .collect(Collectors.toList())
         );
         commandRepository.save(command);

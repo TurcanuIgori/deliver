@@ -1,4 +1,4 @@
-// GET - /comms/ - get all commands dependently by current authorized role
+// GET - /commands/ - get all commands dependently by current authorized role
 function findAllCommands(callback) {
     $.ajax({
         url: 'commands/',
@@ -15,7 +15,7 @@ function findAllCommands(callback) {
     });
 }
 
-// GET - /comms/ - find command by id
+// GET - /commands/ - find command by id
 function findCommandById(id, callback) {
     $.ajax({
         url: 'commands/' + id,
@@ -38,48 +38,49 @@ function findCommandById(id, callback) {
     });
 }
 
-// DELETE - /comms/- delete command by id
+// DELETE - /commands/- delete command by id
 function deleteCommandById(id, callback) {
     $.ajax({
-        url: "commands/" + id,
+        url: 'commands/' + id,
         type: 'DELETE',
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res);
+            deleteCommandFromLocalDB(id, callback);
         }
     });
 }
 
-// PUT - /comms/ - update command
+// PUT - /commands/ - update command
 function updateCommand(data, callback) {
     $.ajax({
         url: 'commands/',
         type : 'PUT',
         data: JSON.stringify(data),
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            updateCommandInLocalDB(data, callback);
         }
     });
 }
 
-// POST - /comms/ - create command
+// POST - /commands/ - create command
 function createCommand(data, callback) {
     $.ajax({
         url: 'commands',
         type : 'POST',
-        contentType: "application/json;charset=utf-8",
+        contentType: 'application/json;charset=utf-8',
         data: JSON.stringify(data),
         success: function (res, textStatus) {
             callback(res, textStatus);
         },
         error: function (res, textStatus) {
-            callback(res, textStatus);
+            console.log(data);
+            insertCommandInLocalDB(data, callback);
         }
     });
 }

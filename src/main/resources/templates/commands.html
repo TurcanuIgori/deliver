@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/dashboard.css"/>
     <link rel="stylesheet" href="css/grid.css"/>
+    <script src="js/dao/command-dao.js"></script>
     <script src="js/service/comm-service.js"></script>
     <script src="js/service/user-service.js"></script>
     <script src="js/service/market-service.js"></script>
@@ -41,7 +42,11 @@
             </li>
         </ul>
         <div class="form-inline mt-2 mt-md-0">
-            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Logout</button>
+            <form id="logoutForm" name="logoutForm" method="POST" action="/logout">
+                <button form="logoutForm" class="btn btn-outline-secondary my-2 my-sm-0" style="margin: 0; padding: 0;" type="submit">
+                    <img height="38px" th:src="@{'/users/image/' + ${session.currentUser.get().getUsername()}}"/>
+                </button>
+            </form>
         </div>
     </div>
 </nav>
@@ -80,7 +85,7 @@
                     </div>
                 </div>
                 <div class="body-body">
-                    <table class="table table-striped table-list">
+                    <table class="table table-striped table-hover table-list">
                         <thead>
                         <tr>
                             <th>Deliver</th>
@@ -103,6 +108,8 @@
                                    data-target="#exampleModal">Edit</a>
                                 <a class="btn btn-outline-danger"
                                    th:onclick="'toogleModalToDeleteCommand(\'' + ${command.id} + '\')'">Delete</a>
+                                <a class="btn btn-outline-primary"
+                                   th:href="'/reports/generateReportForCommand/' + ${command.id}">Download Report</a>
                             </td>
                         </tr>
                         </tbody>
