@@ -3,7 +3,7 @@ package md.delivery.controller.rest;
 import md.delivery.entity.Role;
 import md.delivery.entity.Street;
 import md.delivery.entity.User;
-import md.delivery.repository.UserRepository;
+import md.delivery.repository.*;
 import md.delivery.service.UserService;
 import md.delivery.utils.UserUtils;
 import org.apache.commons.io.IOUtils;
@@ -24,7 +24,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,27 @@ public class UserController {
 
     @Autowired
     private UserUtils userUtils;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private MarketRepository marketRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private CommandRepository commandRepository;
+
+    @Autowired
+    private StreetRepository streetRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     private static Long ID_OF_ROLE_USER = 2L;
 
@@ -198,5 +221,18 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("getDataForSyncronize")
+    public Map<String, Object> getDataForSyncronize() {
+        Map<String, Object> mapWithData = new HashMap<>();
+        mapWithData.put("persons", userRepository.findAll());
+        mapWithData.put("groups", groupRepository.findAll());
+        mapWithData.put("markets", marketRepository.findAll());
+        mapWithData.put("streets", streetRepository.findAll());
+        mapWithData.put("cities", cityRepository.findAll());
+        mapWithData.put("countries", countryRepository.findAll());
+        mapWithData.put("products", productRepository.findAll());
+        return mapWithData;
     }
 }

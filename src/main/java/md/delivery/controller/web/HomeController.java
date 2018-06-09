@@ -32,10 +32,10 @@ public class HomeController {
     private GroupRepository groupRepository;
 
     @Autowired
-    private CountryRepository countryRepository;
+    private CommandRepository commandRepository;
 
     @Autowired
-    private CommandRepository commandRepository;
+    private CountryRepository countryRepository;
 
     @GetMapping("/user")
     public String getIndexPage(Model model, Authentication auth, HttpSession session) {
@@ -83,5 +83,10 @@ public class HomeController {
         model.addAttribute("delivers", userRepository.findAllByActiveIsTrue()
                 .collect(Collectors.toList()));
         return "commands";
+    }
+
+    @GetMapping("/testfile")
+    public String testFile() {
+        return "testFile";
     }
 }

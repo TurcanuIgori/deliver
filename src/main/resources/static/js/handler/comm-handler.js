@@ -1,36 +1,80 @@
+var table = null;
+
 function onLoad() {
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
 }
 
+$(document).ready(function () {
+
+    // console.log(commands);
+    findAllCommands(function (commands12) {
+        var commandsValues = [];
+        commands12.forEach(function (command) {
+            // var command = commands12[i];
+            var commandInLine = [];
+            commandInLine.push(command.id);
+            commandInLine.push(command.deliver.firstName + ' ' + command.deliver.lastName);
+            commandInLine.push(command.market.name);
+            if (command.commandProducts) {
+                var commandProductsValue = '';
+                command.commandProducts.forEach(function (commandProduct) {
+                    commandProductsValue += commandProduct.product.name + ' ' + commandProduct.product.price + ' (lei)'
+                });
+                commandInLine.push(commandProductsValue);
+            } else {
+                commandInLine.push('No products selected!');
+            }
+            commandInLine.push(command.totalPrice);
+            commandsValues.push(commandInLine);
+        });
+        table = $('#commandsGrid').DataTable({
+            data: commandsValues
+        });
+    });
+    $('#commandsGrid tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('activeRow')) {
+            $(this).removeClass('activeRow');
+        }
+        else {
+            table.$('tr.activeRow').removeClass('activeRow');
+            $(this).addClass('activeRow');
+        }
+    });
+});
+
 function toogleModalToCreateCommand() {
     resetCommandForm();
 }
 
-function toogleModalToUpdateCommand(commandId) {
+function toogleModalToUpdateCommand() {
+    console.log(table.$('tr.activeRow')[0].innerText.split('')[0]);
     resetCommandForm();
-    findCommandById(commandId, updateCommandForm);
+    findCommandById(table.$('tr.activeRow')[0].innerText.split('')[0], updateCommandForm);
 }
 
 function updateCommandForm(command) {
     updateSelects(command);
 }
 
-function toogleModalToDeleteCommand(commandId) {
-    deleteCommandById(commandId, deleteCommandCallbak)
+function toogleModalToDeleteCommand() {
+    table.row('tr.activeRow').remove().draw(false);
+    // deleteCommandById(commandId, deleteCommandCallbak)
 }
 
 function deleteCommandCallbak(res, resStatus) {
-    if (resStatus == 'success') {
-        applicationCache.addEventListener('updateready', function () {
-            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                window.applicationCache.swapCache();
-                console.log("appcache updated");
-                window.location.reload();
-            }
-        });
-        location.reload();
-    }
+    table.row('tr.activeRow').remove().draw(false);
+    console.log(table.$('tr.activeRow')[0].innerText.split('')[0]);
+    // if (resStatus == 'success') {
+    //     applicationCache.addEventListener('updateready', function () {
+    //         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+    //             window.applicationCache.swapCache();
+    //             console.log("appcache updated");
+    //             window.location.reload();
+    //         }
+    //     });
+    //     location.reload();
+    // }
 }
 
 // handle the submit command form
@@ -70,7 +114,8 @@ function saveCommandHandler() {
     }
 }
 
-function commandSavedAction(res, textStatus) {
+function commandSavedAction(res, textStatus, insertedCommandId) {
+    console.log('dddddddddddddddddddd', insertedCommandId);
     if (textStatus == 'success') {
         $('#exampleModal').modal('toggle');
         applicationCache.addEventListener('updateready', function () {
