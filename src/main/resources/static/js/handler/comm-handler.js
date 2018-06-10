@@ -6,7 +6,6 @@ function onLoad() {
 }
 
 $(document).ready(function () {
-
     // console.log(commands);
     findAllCommands(function (commands12) {
         var commandsValues = [];
@@ -48,9 +47,9 @@ function toogleModalToCreateCommand() {
 }
 
 function toogleModalToUpdateCommand() {
-    console.log(table.$('tr.activeRow')[0].innerText.split('')[0]);
+    console.log(table.$('tr.activeRow')[0].innerText.split('	')[0]);
     resetCommandForm();
-    findCommandById(table.$('tr.activeRow')[0].innerText.split('')[0], updateCommandForm);
+    findCommandById(table.$('tr.activeRow')[0].innerText.split('	')[0], updateCommandForm);
 }
 
 function updateCommandForm(command) {
@@ -58,23 +57,12 @@ function updateCommandForm(command) {
 }
 
 function toogleModalToDeleteCommand() {
+    deleteCommandById(table.$('tr.activeRow')[0].innerText.split('	')[0], deleteCommandCallbak);
     table.row('tr.activeRow').remove().draw(false);
-    // deleteCommandById(commandId, deleteCommandCallbak)
 }
 
 function deleteCommandCallbak(res, resStatus) {
-    table.row('tr.activeRow').remove().draw(false);
-    console.log(table.$('tr.activeRow')[0].innerText.split('')[0]);
-    // if (resStatus == 'success') {
-    //     applicationCache.addEventListener('updateready', function () {
-    //         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-    //             window.applicationCache.swapCache();
-    //             console.log("appcache updated");
-    //             window.location.reload();
-    //         }
-    //     });
-    //     location.reload();
-    // }
+    console.log(table.$('tr.activeRow')[0].innerText.split('	')[0]);
 }
 
 // handle the submit command form
@@ -107,26 +95,39 @@ function saveCommandHandler() {
             ]
         };
         if (command.id) {
-            updateCommand(command, commandSavedAction);
+            updateCommand(command, commandUpdatedAction);
         } else {
             createCommand(command, commandSavedAction);
         }
     }
 }
 
-function commandSavedAction(res, textStatus, insertedCommandId) {
-    console.log('dddddddddddddddddddd', insertedCommandId);
-    if (textStatus == 'success') {
-        $('#exampleModal').modal('toggle');
-        applicationCache.addEventListener('updateready', function () {
-            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                window.applicationCache.swapCache();
-                console.log("appcache updated");
-                window.location.reload();
-            }
+function commandUpdatedAction(res, textStatus, insertedCommand) {
+    table.row('tr.activeRow').remove().draw(false);
+    renderRow(insertedCommand);
+}
+
+function commandSavedAction(res, textStatus, insertedCommand) {
+    renderRow(insertedCommand);
+}
+
+function renderRow(command) {
+    console.log('Command with full details after insert/update: ', command);
+    var commandInLine = [];
+    commandInLine.push(command.id);
+    commandInLine.push(command.deliver.firstName + ' ' + command.deliver.lastName);
+    commandInLine.push(command.market.name);
+    if (command.commandProducts) {
+        var commandProductsValue = '';
+        command.commandProducts.forEach(function (commandProduct) {
+            commandProductsValue += commandProduct.product.name + ' ' + commandProduct.product.price + ' (lei)'
         });
-        location.reload();
+        commandInLine.push(commandProductsValue);
+    } else {
+        commandInLine.push('No products selected!');
     }
+    commandInLine.push(command.totalPrice);
+    table.row.add(commandInLine).draw(false);
 }
 
 function resetCommandForm() {

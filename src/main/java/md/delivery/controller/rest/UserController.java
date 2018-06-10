@@ -233,6 +233,7 @@ public class UserController {
         mapWithData.put("cities", cityRepository.findAll());
         mapWithData.put("countries", countryRepository.findAll());
         mapWithData.put("products", productRepository.findAll());
+        mapWithData.put("commands", commandRepository.findAll());
         return mapWithData;
     }
 }

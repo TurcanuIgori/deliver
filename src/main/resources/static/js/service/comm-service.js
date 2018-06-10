@@ -25,8 +25,9 @@ function findCommandById(id, callback) {
             callback(res);
         },
         error: function (res, textStatus) {
+           // loadCommandById(id, callback);
             findAllCommands(function (commands) {
-                for (i = 0; i < commands.length; i++) {
+                for (var i = 0; i < commands.length; i++) {
                     var command = commands[i];
                     if (command.id == id) {
                         callback(command);
@@ -60,7 +61,7 @@ function updateCommand(data, callback) {
         data: JSON.stringify(data),
         contentType: 'application/json;charset=utf-8',
         success: function (res, textStatus) {
-            callback(res, textStatus);
+            callback('', textStatus, res);
         },
         error: function (res, textStatus) {
             updateCommandInLocalDB(data, callback);

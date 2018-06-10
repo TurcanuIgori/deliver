@@ -36,7 +36,10 @@ public class AppCacheController {
                         "js/handler/comm-handler.js\n" +
                         "js/libraries/tether.min.js\n" +
                         "js/libraries/bootstrap.min.js\n" +
+                        "http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js\n" +
+                        "http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css\n" +
                         "/commands/\n" +
+                        "/users/getDataForSyncronize\n" +
                         "/users/\n" +
                         "/products/\n" +
                         "/cities//\n" +

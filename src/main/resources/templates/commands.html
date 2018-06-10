@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html manifest="manifest-appcache" type="text/cache-manifest" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Commands</title>
@@ -90,9 +90,11 @@
                             <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal"
                                     data-target="#exampleModal" th:onclick="'toogleModalToUpdateCommand()'">Edit Command
                             </button>
-                            <button type="button" class="btn  btn-sm btn-danger" th:onclick="'toogleModalToDeleteCommand()'">Delete Command
+                            <button type="button" class="btn  btn-sm btn-danger"
+                                    th:onclick="'toogleModalToDeleteCommand()'">Delete Command
                             </button>
-                            <button type="button" class="btn btn-sm btn-primary btn-create" th:onclick="'/reports/generateReportForCommand/2'">Download Report
+                            <button type="button" class="btn btn-sm btn-primary btn-create"
+                                    th:onclick="'/reports/generateReportForCommand/2'">Download Report
                             </button>
                         </div>
                     </div>
